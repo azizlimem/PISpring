@@ -12,4 +12,6 @@ public interface LivreurInt extends Serializable {
     Livreur getLivreurById(Long idlivreur);
     Livreur updateLivreur(Long idlivreur, Livreur livreurDetails);
     public void deletelivreur(Long idlivreur);
+    public List<Livreur> getLivreurDispo();
+
 }

@@ -74,4 +74,9 @@ public class LivRestController_ {
         livreurService.deletelivreur(idlivreur);
         return ResponseEntity.ok().build();
     }
+    @GetMapping("livvv")
+    public List<Livreur> getLiv() {
+        return livreurService.getLivreurDispo();
+    }
+
 }

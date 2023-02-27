@@ -26,7 +26,7 @@ public class LivreurService implements LivreurInt{
         return livreurRepository.save(livreur);
     }
 
-    //Afficher grace a l id
+    //Afficher grace l id
     @Override
     public Livreur getLivreurById(Long idlivreur) {
         return livreurRepository.findById(idlivreur)
@@ -46,6 +46,11 @@ public class LivreurService implements LivreurInt{
     public void deletelivreur(Long idlivreur) {
         Livreur livreur = getLivreurById(idlivreur);
         livreurRepository.delete(livreur);
+    }
+
+    @Override
+    public List<Livreur> getLivreurDispo() {
+        return livreurRepository.GetLivreur();
     }
 
 
