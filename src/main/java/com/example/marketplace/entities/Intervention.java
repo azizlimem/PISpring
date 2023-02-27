@@ -32,5 +32,6 @@ public class Intervention implements Serializable {
     Set<Reclamation> recinter;
 
     @ManyToOne
+    @JsonIgnore
     User userrrr;
 }
