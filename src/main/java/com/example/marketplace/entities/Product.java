@@ -50,4 +50,16 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     Set<Rating> ratings;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    @Column(name = "quantity")
+    private Integer quantity;
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 }
