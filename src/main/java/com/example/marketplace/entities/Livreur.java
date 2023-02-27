@@ -1,5 +1,6 @@
 package com.example.marketplace.entities;
 
+import com.example.marketplace.enumerations.Statut_livreur;
 import com.example.marketplace.enumerations.Type_livraison;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -28,7 +29,8 @@ public class Livreur {
     float longitude;
     Integer Nbrelivraison;
     @Enumerated(EnumType.STRING)
-    Type_livraison typelivraison;
+    Statut_livreur statutlivreur;
+
 
     @OneToMany(mappedBy="livreur")
     @JsonIgnore

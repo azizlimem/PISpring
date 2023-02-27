@@ -1,5 +1,6 @@
 package com.example.marketplace.entities;
 
+import com.example.marketplace.enumerations.Statut_livraison;
 import com.example.marketplace.enumerations.Type_livraison;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
@@ -35,6 +36,9 @@ public class Livraison {
     float longitude;
     @Enumerated(EnumType.STRING)
     Type_livraison typelivraison;
+    @Enumerated(EnumType.STRING)
+    Statut_livraison statutlivraison;
+
 
     @ManyToOne
     @JsonIgnore
