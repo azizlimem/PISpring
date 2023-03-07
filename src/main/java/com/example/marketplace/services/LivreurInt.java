@@ -2,7 +2,9 @@ package com.example.marketplace.services;
 
 
 import com.example.marketplace.entities.Livreur;
+import com.google.maps.errors.ApiException;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -13,5 +15,17 @@ public interface LivreurInt extends Serializable {
     Livreur updateLivreur(Long idlivreur, Livreur livreurDetails);
     public void deletelivreur(Long idlivreur);
     public List<Livreur> getLivreurDispo();
+   // public int countLivraison(Long idlivreur) ;
+   public int nbredelivraison(Long idLivreur);
 
-}
+    public int getdatedembauche(Long idLivreur) ;
+    public void ajouterunbonus(Long idLivreur);
+
+
+        ////////////////////
+    public double calculateDistance(String origin, String destination) throws ApiException, InterruptedException, IOException ;
+
+    public void retournestatut(Long idlivreur);
+    public void ajouterunbonusencasdelivadd(Long idLivreur);
+
+    }
