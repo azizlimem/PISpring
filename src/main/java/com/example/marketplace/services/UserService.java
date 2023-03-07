@@ -4,17 +4,30 @@ import com.example.marketplace.entities.User;
 import com.example.marketplace.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 @Slf4j
 @Service
 @AllArgsConstructor
 
-public class UserService  implements IUserServices{
+public class UserService  implements IUserServices {
 
     private final IUserRepository userRepository;
+    private final MailerService mailerService;
+
+
+
+
+
+
 
     @Override
     public List<User> retrieveAllUsers() {
@@ -24,14 +37,18 @@ public class UserService  implements IUserServices{
     }
 
     @Override
-    public User addUser(User u) {
-
+    public User addUser(User u){
+        String code = RandomStringUtils.randomAlphanumeric(8);
+        LocalDateTime d = LocalDateTime.now();
+        mailerService.sendEmail(u.getEmail(),"Account Creation"," Hello "+u.getFirstName()+" "+u.getLastName()+"\n Your account is almost created, please Login and write this code in the right field to complete your inscription !\n Your code is :"+ code);
+        u.setStatus(code);
+        u.setCreatedAt(d);
         return userRepository.save(u);
     }
 
     @Override
     public User updateUser(User u) {
-
+        mailerService.sendEmail(u.getEmail(),"User Modification"," Hello "+u.getFirstName()+" "+u.getLastName()+"\n Your account informations are modified successfully !");
         return userRepository.save(u);
     }
 
@@ -43,4 +60,41 @@ public class UserService  implements IUserServices{
     public void removeUser(Integer idUser) {
         userRepository.deleteById(idUser);
     }
+    @Override
+    public List<User> rechercheDynamique(String search) {
+
+        return userRepository.rechercheDynamique(search);
+    }
+    @Override
+    public String Verification( String email,String code){
+        User u = userRepository.findByEmail(email);
+        if (u == null){
+            return "Wrong or Unexisting Email";
+        } else if ((u.getStatus()).equals("verified")){
+            return "User already Verified";
+        } else if ((u.getStatus()).equals(code)){
+            u.setStatus("verified");
+            userRepository.save(u);
+            return "Your account is now Verified you can proceed to Logging In";
+        } else return "Verification Code is Incorrect";
+
+
+    }
+@Scheduled(cron="*/10 * * * * *")
+    public void DeleteNonVerifiedAccounts(){
+        String s ="verified";
+        LocalDateTime d = LocalDateTime.now().minusHours(24);
+        List<User> list = new ArrayList<>();
+        userRepository.findByStatusNotContainingAndCreatedAtIsBefore(s,d).forEach(list::add);
+        for (User u : list){
+           System.out.println(u.getFirstName());
+            userRepository.deleteById(u.getId());
+        }
+
+    }
+
+
+
+
+
 }
