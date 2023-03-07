@@ -4,15 +4,19 @@ import com.example.marketplace.entities.Livraison;
 import com.example.marketplace.entities.Livreur;
 import com.example.marketplace.services.LivraisonService;
 import com.example.marketplace.services.LivreurService;
+import com.google.maps.errors.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/Gestionslivraison")
 public class LivRestController_ {
+
     @Autowired
     private LivraisonService livraisonService;
     @Autowired
@@ -24,10 +28,7 @@ public class LivRestController_ {
         return livraisonService.retrieveAllLivraison();
     }
 
-    @PostMapping("Ajouterunelivraison")
-    public Livraison saveLivraison(@RequestBody Livraison livraison) {
-        return livraisonService.saveLivraison(livraison);
-    }
+
 
     @GetMapping("Rechercherunelivraison/{id}")
     public Livraison getLivraisonById(@PathVariable(value = "idlivraison") Long idlivraison) {
@@ -53,9 +54,9 @@ public class LivRestController_ {
         return livreurService.retrieveAllLivreur();
     }
 
-    @PostMapping("Ajouterunelivreur")
-    public Livreur saveLivreur(@RequestBody Livreur livreur) {
-        return livreurService.saveLivreur(livreur);
+    @PutMapping("AjouterunelivreurEtAffecter/{id}")
+    public Livraison saveandaffectLivreurtoLivraison(@RequestBody Livraison livraison,@PathVariable("id") Long idLivreur) {
+        return livraisonService.saveandaffectLivreurtoLivraison(livraison,idLivreur);
     }
 
     @GetMapping("Rechercherunlivreur/{id}")
@@ -77,6 +78,34 @@ public class LivRestController_ {
     @GetMapping("livvv")
     public List<Livreur> getLiv() {
         return livreurService.getLivreurDispo();
+    }
+    @GetMapping("nombredelivraison")
+    public int nbreliv(Long idlivreur){return livreurService.nbredelivraison(idlivreur);}
+
+    @GetMapping("test/{idlivreur}")
+    public void activer(@PathVariable(value = "idlivreur")Long idlivreur){ livreurService.retournestatut(idlivreur);}
+
+    @GetMapping("anneedembauche/{id}")
+    public int getdatedembauche(@PathVariable(value = "id") Long idLivreur) {return livreurService.getdatedembauche(idLivreur);}
+
+    @GetMapping("ajouterbonusausalaire/{id}")
+    public void ajouterunbonus(@PathVariable(value = "id") Long idLivreur){ livreurService.ajouterunbonus(idLivreur);}
+    @GetMapping("ajouterbonusausalaireadd/{id}")
+    public void ajouterunbonusadd(@PathVariable(value = "id") Long idLivreur){ livreurService.ajouterunbonusencasdelivadd(idLivreur);}
+
+
+        /////////////////////////////////
+    @GetMapping("/distance/{origin}/{destination}")
+
+    public ResponseEntity<Double> getDistance(
+            @RequestParam String origin,
+            @RequestParam String destination) {
+        try {
+            double distance = livreurService.calculateDistance(origin, destination);
+            return ResponseEntity.ok(distance);
+        } catch (ApiException | InterruptedException | IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }

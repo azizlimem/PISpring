@@ -20,14 +20,13 @@ public class Rating {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "rating_name")
-    private String ratingName;
+    private Integer note;
 
     @JsonIgnore
-    @ManyToOne
-    Product product;
+    @ManyToMany
+    Set<Product> products;
     @JsonIgnore
-    @ManyToOne
-    User user;
+    @ManyToMany
+    Set<User> users;
 
 }

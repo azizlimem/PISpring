@@ -29,4 +29,6 @@ public class Market implements Serializable {
     @JsonIgnore
     @OneToOne
     private User user;
+    @OneToOne(mappedBy = "market")
+    Catalogue catalogue;
 }

@@ -17,5 +17,5 @@ public interface IRecrepo extends JpaRepository<Reclamation,Long> {
     @Transactional
     @Query("UPDATE   Reclamation  i SET  i.ticketstatus=:ticketstatus where i.idrec=:idrec")
     void updaterecc(@Param("idrec") Long idrec, @Param("ticketstatus") Statuss ticketstatus);
-    @Query("Select u from Reclamation  u order by u.priorite DESC ")
+    @Query("Select u from Reclamation  u order by u.priorite DESC , u.createdDate ASC ")
     List<Reclamation> orderbypriorite();}
