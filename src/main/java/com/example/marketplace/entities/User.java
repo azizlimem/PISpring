@@ -59,6 +59,7 @@ public class User implements Serializable {
                 Set<Reclamation> userrec;
 ////intervention /////
 @OneToMany(mappedBy="userrrr",cascade = CascadeType.ALL)
+@JsonIgnore
                 Set<Intervention> interuser;
 
 ///Livreur/////
