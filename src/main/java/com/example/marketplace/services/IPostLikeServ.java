@@ -17,5 +17,6 @@ public interface IPostLikeServ extends Serializable {
 
     void removePostLike(Integer idC);
 
-    public PostLike addAndAssignPostLikeToPost(PostLike postLike, Integer id);
+    public PostLike addAndAssignPostLikeToPostAndUser(PostLike postLike, Integer idP,Integer idU);
+
 }
