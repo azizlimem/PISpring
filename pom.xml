@@ -65,12 +65,6 @@
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
 
-        
-        <dependency>
-            <groupId>com.snatchbot</groupId>
-            <artifactId>snatchbot-api</artifactId>
-            <version>1.0.0</version>
-        </dependency>
 
         <dependency>
             <groupId>com.google.maps</groupId>
