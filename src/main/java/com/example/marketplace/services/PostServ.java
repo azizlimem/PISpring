@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ import java.util.Set;
 public class PostServ implements IPostServ {
     final IPostRepo iPostRepo;
     final IUserRepository iUserRepository;
+    final MailerService mailerService;
 
     @Override
     public List<Post> getAllPost() {
@@ -111,8 +113,10 @@ public class PostServ implements IPostServ {
         }
         if(x!=0){
             Post y=iPostRepo.findById(x).orElse(null);
-            
+            Date d=new Date();
+            mailerService.sendEmail(y.getUser().getEmail(),"Best Post Winner"," Hello "+y.getUser().getFirstName()+" "+y.getUser().getLastName()+"\n Your Post is the best for week "+d+"\n");
             return y;
+
         }
         return null;
     }

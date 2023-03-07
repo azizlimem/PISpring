@@ -74,14 +74,14 @@ public class User implements Serializable {
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     Panier panier;
 //////reclamation//////
-@OneToMany(mappedBy="userrr",cascade = CascadeType.ALL)
-@JsonIgnore
-                Set<Reclamation> userrec;
-////intervention /////
+    @OneToMany(mappedBy="userrr",cascade = CascadeType.ALL)
     @JsonIgnore
+    Set<Reclamation> userrec;
+////intervention /////
+
 @OneToMany(mappedBy="userrrr",cascade = CascadeType.ALL)
 @JsonIgnore
-                Set<Intervention> interuser;
+Set<Intervention> interuser;
 
 ///Livreur/////
 
@@ -89,9 +89,6 @@ public class User implements Serializable {
     @JsonIgnore
     private Livreur livreur;
 
-    @OneToOne( cascade = CascadeType.ALL,mappedBy = "user")
-    @JsonIgnore
-    private Livreur livreur;
     @JsonIgnore
     @ManyToMany(mappedBy = "users" ,cascade = CascadeType.ALL)
     Set<Rating> ratings;
