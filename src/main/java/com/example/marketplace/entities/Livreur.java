@@ -36,7 +36,7 @@ public class Livreur {
     @JsonIgnore
     private List<Livraison> livraisons ;
 
-    @OneToOne(mappedBy = "livreur")
+    @OneToOne
     @JsonIgnore
     private User user;
 

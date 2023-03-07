@@ -26,6 +26,8 @@ public class Catalogue {
     @JsonIgnore
     @ManyToMany
     private Set<Product> products ;
+    @OneToOne
+    Market market;
 
 
 }
