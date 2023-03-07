@@ -62,7 +62,7 @@ public class User implements Serializable {
                 Set<Intervention> interuser;
 
 ///Livreur/////
-    @OneToOne( cascade = CascadeType.ALL)
+    @OneToOne( cascade = CascadeType.ALL,mappedBy = "user")
     @JsonIgnore
     private Livreur livreur;
 }
