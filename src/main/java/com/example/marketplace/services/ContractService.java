@@ -43,4 +43,5 @@ public class ContractService implements IContractServices {
     public void removeContract(Integer idContract) {
         contractRepository.deleteById(idContract);
     }
+
 }
