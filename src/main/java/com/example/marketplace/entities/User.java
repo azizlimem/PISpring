@@ -45,6 +45,9 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     Set<CommentLike> commentLikes;
+    @JsonIgnore
+    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "reported")
+    Set<Post> PostsSignale;
     ////////////////Product///////////////////
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

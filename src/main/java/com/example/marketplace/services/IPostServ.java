@@ -3,6 +3,7 @@ package com.example.marketplace.services;
 import com.example.marketplace.entities.Comment;
 import com.example.marketplace.entities.Post;
 import com.example.marketplace.entities.PostLike;
+import com.example.marketplace.entities.User;
 import org.springframework.data.repository.query.Param;
 
 import java.io.Serializable;
@@ -21,4 +22,9 @@ public interface IPostServ extends Serializable {
 
     public List<Comment> getAllCommentOfPost(Integer id);
     public int nbPostLike(Integer id);
+    public Post addAndAssignPostToPostUser(Post post, Integer id);
+    public void affecterSignal(Integer idP,Integer idU);
+    public int NbSignale(Integer id);
+    public Post bestPost();
+
 }

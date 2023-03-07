@@ -2,19 +2,26 @@ package com.example.marketplace.services;
 
 import com.example.marketplace.entities.Comment;
 import com.example.marketplace.entities.Post;
+import com.example.marketplace.entities.User;
 import com.example.marketplace.repository.IPostRepo;
+import com.example.marketplace.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 
 @Service
 @AllArgsConstructor
 @Slf4j
-public class PostServ implements IPostServ{
+
+public class PostServ implements IPostServ {
     final IPostRepo iPostRepo;
+    final IUserRepository iUserRepository;
 
     @Override
     public List<Post> getAllPost() {
@@ -48,10 +55,71 @@ public class PostServ implements IPostServ{
         return iPostRepo.getAllcomment(id);
     }
 
+
+    @Override
+    public Post addAndAssignPostToPostUser(Post post, Integer id) {
+        badWordImpl b = new badWordImpl();
+        if (b.filterText(post.getBody()) == true || b.filterText(post.getTitle()) == true) {
+            return null;
+        }
+        User u = iUserRepository.findById(id).orElse(null);
+        post.setUser(u);
+        return iPostRepo.save(post);
+    }
+
     @Override
     public int nbPostLike(Integer id) {
         return iPostRepo.nbPostLike(id);
     }
 
+    @Override
+    public void affecterSignal(Integer idP, Integer idU) {
+        User u = iUserRepository.findById(idU).orElse(null);
+        Post p = iPostRepo.findById(idP).orElse(null);
+        p.getReported().add(u);
+        iPostRepo.save(p);
+    }
 
+    @Override
+    public int NbSignale(Integer id) {
+        int x = 0;
+        Post p = iPostRepo.findById(id).get();
+        if (p == null) {
+            return x;
+        }
+        for (int i = 0; i < p.getReported().size(); i++) {
+            x++;
+        }
+        return x;
+    }
+
+ //   @Scheduled(cron = "*/10 * * * * *")
+    public void deleteAutomatique() {
+        for (Post post : iPostRepo.findAll()) {
+            if (post.getReported().size() > 3) {
+                iPostRepo.deleteById(post.getIdPost());
+            }
+        }
+    }
+    @Override
+    public Post bestPost() {
+        int x = 0;
+        for (Post post : iPostRepo.findAll()) {
+            if (iPostRepo.nbPostLike(post.getIdPost()) > x){
+                x=post.getIdPost();
+            }
+        }
+        if(x!=0){
+            Post y=iPostRepo.findById(x).orElse(null);
+            
+            return y;
+        }
+        return null;
+    }
 }
+
+
+
+
+    
+

@@ -2,8 +2,10 @@ package com.example.marketplace.services;
 
 import com.example.marketplace.entities.Comment;
 import com.example.marketplace.entities.Post;
+import com.example.marketplace.entities.User;
 import com.example.marketplace.repository.ICommentRepo;
 import com.example.marketplace.repository.IPostRepo;
+import com.example.marketplace.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.List;
 public class CommentServ implements ICommentServ{
     final ICommentRepo iCommentRepo;
     final IPostRepo iPostRepo;
+    final IUserRepository iUserRepository;
 
 
     @Override
@@ -46,9 +49,22 @@ public class CommentServ implements ICommentServ{
     }
 
     @Override
-    public Comment addAndAssignCommentToPost(Comment comment, Integer id) {
-        Post p=iPostRepo.findById(id).orElse(null);
+    public Comment addAndAssignCommentToPostUser(Comment comment, Integer idPost,Integer iduser) {
+        Post p=iPostRepo.findById(idPost).orElse(null);
+        User user=iUserRepository.findById(iduser).orElse(null);
         comment.setPost(p);
+        comment.setUser(user);
         return iCommentRepo.save(comment);
+    }
+
+    @Override
+    public int nbCommentLike(Integer id) {
+        if(iCommentRepo.nbCommentLike(id)-iCommentRepo.nbNULLComment(id)<0){
+            return 0;
+        }
+        else {
+            return iCommentRepo.nbCommentLike(id)-iCommentRepo.nbNULLComment(id);
+        }
+
     }
 }
