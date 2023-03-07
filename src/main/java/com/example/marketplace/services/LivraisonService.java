@@ -1,18 +1,23 @@
 package com.example.marketplace.services;
 
 import com.example.marketplace.entities.Livraison;
+import com.example.marketplace.entities.Livreur;
 import com.example.marketplace.repository.ILivraisonRepository;
+import com.example.marketplace.repository.ILivreurRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Slf4j
 public class LivraisonService implements LivraisonInt{
     @Autowired
     ILivraisonRepository livraisonRepository;
+    ILivreurRepository livreurRepository;
 
     //Affichage
     @Override
@@ -22,8 +27,12 @@ public class LivraisonService implements LivraisonInt{
     }
     //AjoutLivraison
     @Override
-    public Livraison saveLivraison(Livraison livraison) {
-        return livraisonRepository.save(livraison);
+    public Livraison saveandaffectLivreurtoLivraison(Livraison livraison, Long idLivreur) {
+        Livraison l=livraisonRepository.save(livraison);
+        Livreur liv = livreurRepository.findById(idLivreur).get();
+         l.setLivreur(liv);
+         System.out.println("je suis la");
+        return l;
     }
 
     //Afficher grace a l id

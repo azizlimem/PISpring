@@ -23,11 +23,13 @@ public class Livreur {
     @Temporal(TemporalType.DATE)
     private Date datedembauche;
     float salaire;
-    float bonus;
-    float penaliser;
-    float latitude;
-    float longitude;
+//   float bonus;
+   // float penaliser;
+  //  float latitude;
+    //float longitude;
     Integer Nbrelivraison;
+    String origin;
+    String destination;
     @Enumerated(EnumType.STRING)
     Statut_livreur statutlivreur;
 

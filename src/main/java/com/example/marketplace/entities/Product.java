@@ -14,28 +14,22 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "taux_remise")
     private Float tauxRemise;
 
-    @Column(name = "image")
-    private String image;
+    private  String image;
 
-    @Column(name = "price")
     private Float price;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "date_expiration")
     private Date dateExpiration;
 
-    @Column(name = "name")
     private String name;
+    private Integer Nutriscore;
 
     @Enumerated(EnumType.STRING)
     private Categorie categorie;
@@ -43,23 +37,18 @@ public class Product {
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
     private Set<Catalogue> catalogues ;
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
     private Set<LigneCommande>  ligneCommandes  ;
 
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    Set<Rating> ratings;
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
+
+
     @Column(name = "quantity")
     private Integer quantity;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "products" ,cascade = CascadeType.ALL)
+    Set<Rating> ratings;
 
-    public Integer getQuantity() {
-        return quantity;
-    }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 }

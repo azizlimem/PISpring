@@ -65,9 +65,7 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     Set<CommentLike> commentLikes;
     ////////////////Product///////////////////
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    Set<Rating> ratings;
+
     ///////////Panier/////////////
     @JsonIgnore
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
@@ -82,9 +80,18 @@ public class User implements Serializable {
                 Set<Intervention> interuser;
 
 ///Livreur/////
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private Livreur livreur;
+
+    @OneToOne( cascade = CascadeType.ALL,mappedBy = "user")
+    @JsonIgnore
+    private Livreur livreur;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users" ,cascade = CascadeType.ALL)
+    Set<Rating> ratings;
+
 
 
 }

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface IRatingServ extends Serializable {
-    Rating addProduct(Rating rating);
+    Rating addRating(Rating rating);
 
     List<Rating> findAllRating();
 
@@ -15,4 +15,6 @@ public interface IRatingServ extends Serializable {
     Rating findById(Integer id);
 
     void deleteRating(Integer id);
+    Rating addAndassignRatingToProductAndUser(Rating r,Integer idProd,Integer idUser);
+    float RatingCalcul(Integer id);
 }

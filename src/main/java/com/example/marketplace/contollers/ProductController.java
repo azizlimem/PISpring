@@ -2,6 +2,8 @@ package com.example.marketplace.contollers;
 
 import com.example.marketplace.entities.Comment;
 import com.example.marketplace.entities.Product;
+import com.example.marketplace.entities.Rating;
+import com.example.marketplace.enumerations.NutriscoreCategorie;
 import com.example.marketplace.services.ICommentServ;
 import com.example.marketplace.services.IProductServ;
 import com.example.marketplace.services.ProductServ;
@@ -44,4 +46,19 @@ public class ProductController {
     void deleteProduct(@PathVariable("id") Integer id) {
         iProductServ.deleteProduct(id);
     }
+    @GetMapping("/testt/{p}")
+    NutriscoreCategorie GetScore(@PathVariable("p")int p) {
+        return iProductServ.NutriscoreCategorie(p);
+    }
+    @GetMapping("/FiltrePrix/{px}")
+    List<Product> FiltrePrix(@PathVariable("px")Float px){
+        return iProductServ.filterByPrice(px);
+    }
+
+    @GetMapping("/alert")
+    public String showAlert() {
+        return iProductServ.showAlert();
+    }
+
+
 }
