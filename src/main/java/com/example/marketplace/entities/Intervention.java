@@ -27,6 +27,7 @@ public class Intervention implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date datedebinter;
 
+
     @OneToMany(mappedBy="intervention",cascade = CascadeType.ALL)
     @JsonIgnore
     Set<Reclamation> recinter;

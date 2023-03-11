@@ -32,6 +32,7 @@ public class Reclamation implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date createdDate;
     private String priorite;
+    private String reponsealareclamation  ;
     @ManyToOne
     @JsonIgnore
     User userrr;

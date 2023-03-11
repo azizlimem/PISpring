@@ -37,6 +37,7 @@ public class User implements Serializable {
     private String email;
     @NonNull
     private String password;
+    private Integer nbrpoints;
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",

@@ -10,6 +10,7 @@ import com.example.marketplace.services.RecService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -104,4 +105,18 @@ public class inter {
    public  void prixproduit (@PathVariable Sujetrec description,@PathVariable Integer idprodrec){
         recserv.prixproduit(  description, idprodrec);
    }
+    @GetMapping("/listemotspositifs/{filePath}")
+    public   List<List<String>> readExcellistemotspositifs(String filePath) throws IOException {
+        return recserv.readExcel(filePath);
+    }
+    @GetMapping("scoresatisfaction/{filepath}/{filepathneutre}/{filepathnegatifs}")
+    public  String retournescoredesatisfactionclient1(String filepath,String filepathneutre,String filepathnegatifs) throws IOException {
+        return   recserv.retournescoredesatisfactionclient(filepath,filepathneutre,filepathnegatifs);
+    }
+
+    @GetMapping("lemeilleuremployebrusque")
+    public String lemeilleureemployedeumois(){
+        return   recserv.lemeilleureemployedeumois();
+
+    }
 }
