@@ -17,8 +17,13 @@ public class Panier {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer idPanier;
+    float prixTotal;
     @Temporal(TemporalType.DATE)
     Date datePanier;
+    @Temporal(TemporalType.DATE)
+    Date dateExpirationPanier;
+    float remise=0.8f;
+
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "paniers")
     Set<LigneCommande> ligneCommandes;

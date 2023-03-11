@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -16,10 +17,11 @@ public class FactureCommande {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer idFacture;
     float prixFacture;
+    @Temporal(TemporalType.DATE)
+    Date DateCommande;
     @JsonIgnore
     @OneToOne
     Commande commande;
-
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "facture")
     @JsonIgnore
     Livraison livraison;

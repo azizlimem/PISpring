@@ -12,11 +12,12 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+
 public class LigneCommande {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer idLigneCommande;
-    Integer qtteProduit;
+    Integer quantiteProduit;
     @JsonIgnore
     @ManyToOne
     Commande commande;
@@ -31,4 +32,6 @@ public class LigneCommande {
     @OneToMany(mappedBy="lgcommande")
     @JsonIgnore
                     Set<Reclamation> reclgcommande;
+
+
 }

@@ -1,25 +1,21 @@
 package com.example.marketplace.contollers;
 
-import com.example.marketplace.entities.Commande;
 import com.example.marketplace.entities.LigneCommande;
-import com.example.marketplace.services.ICommandeServices;
 import com.example.marketplace.services.ILigneCommandeServices;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/LigneCommande")
-@Tag(name = "ligne de commande")
 public class LigneCommandeController {
 private final ILigneCommandeServices ligneCommandeServices;
 
     @Operation(description = "Add lignecommande")
-    @PostMapping("/add")
-    LigneCommande addLigneCommande(@RequestBody LigneCommande ligneCommande){
-        return ligneCommandeServices.addLigneCommande(ligneCommande);
+    @PutMapping("/add/{idPa}/{idPr}")
+    LigneCommande addLigneCommande(@RequestBody LigneCommande ligneCommande,@PathVariable("idPa") Integer IdPanier,@PathVariable("idPr") Integer IdProduct){
+        return ligneCommandeServices.affecterpanierAndProductlignedecommande(ligneCommande,IdPanier,IdProduct);
 
     }
 
