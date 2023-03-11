@@ -29,7 +29,7 @@ private final IUserRepository userRepository;
     public Panier addPanierandaffectoUser(Panier panier, Integer IdUser) {
 
         User user=userRepository.findById(IdUser).orElse(null);
-        System.out.println(user.getIdUser());
+        System.out.println(user.getId());
         if(user.getPanier()==null) {
          //   System.out.println("awel mara");
             panier.setUser(user);
