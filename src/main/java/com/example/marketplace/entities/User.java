@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -37,14 +38,19 @@ public class User implements Serializable {
     @NonNull
     private String password;
     @JsonIgnore
-    @ManyToOne
-    Role role;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    Set<Role> roles = new HashSet<>();
     String cinUser;
     String phoneNumber;
     @JsonIgnore
-    String status;
+  Boolean status;
     @JsonIgnore
     String photo;
+    @JsonIgnore
+    String code;
     @JsonIgnore
     LocalDateTime createdAt;
     /////////////////////MARKET///////////////

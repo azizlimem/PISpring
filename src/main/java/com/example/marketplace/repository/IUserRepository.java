@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserRepository extends CrudRepository<User,Integer>, JpaRepository<User,Integer> {
 
@@ -18,7 +19,15 @@ public interface IUserRepository extends CrudRepository<User,Integer>, JpaReposi
 
 
     User findByEmail(String email);
+    User findByCode(String code);
+    Optional<User> findByUsername(String username);
 
-  List<User> findByStatusNotContainingAndCreatedAtIsBefore(String a , LocalDateTime b);
+  List<User> findByStatusIsNullAndCreatedAtIsBefore( LocalDateTime b);
+
+    Boolean existsByUsername(String username);
+
+    Boolean existsByEmail(String email);
+
+
 
 }

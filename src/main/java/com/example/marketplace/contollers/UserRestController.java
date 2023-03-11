@@ -4,13 +4,15 @@ import com.example.marketplace.services.IUserServices;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
-@Tag(name = "User Management")
+
 
 public class UserRestController {
 
@@ -32,11 +34,11 @@ public class UserRestController {
         return userServices.retrieveUser(idUser);
     }
 
-    @Operation (description = "Add user")
+   /* @Operation (description = "Add user")
     @PostMapping("/add")
     User addUser(@RequestBody User u){
         return userServices.addUser(u);
-    }
+    }*/
 
     @Operation (description = "Update user")
     @PutMapping("/update")
@@ -55,11 +57,7 @@ public class UserRestController {
         return userServices.rechercheDynamique(recherche);
     }
 
-    @Operation (description = "Verify user")
-    @GetMapping("/verification")
-    String verifyUser(@RequestParam String email , String code){
-        return userServices.Verification(email,code);
-    }
+
 
 }
 

@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/market")
-@Tag(name = "Market Management")
+
 
 public class MarketRestController {
 

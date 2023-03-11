@@ -1,5 +1,6 @@
 package com.example.marketplace.entities;
 
+import com.example.marketplace.enumerations.ERole;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,10 +21,15 @@ public class Role implements Serializable {
     @Setter(value = AccessLevel.NONE)
     private Integer id;
 
-    @NonNull
-    private String name;
-    // ManyToMany Relations
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="role")
-    private Set<User> users;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ERole name;
+
+
+
+
+    public ERole getName() {
+        return name;
+    }
 
 }
