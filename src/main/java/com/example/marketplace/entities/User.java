@@ -36,6 +36,7 @@ public class User implements Serializable {
     private String email;
     @NonNull
     private String password;
+    private Integer nbrpoints;
     @JsonIgnore
     @ManyToOne
     Role role;
