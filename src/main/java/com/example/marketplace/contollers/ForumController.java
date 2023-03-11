@@ -6,8 +6,11 @@ import com.example.marketplace.services.ICommentServ;
 import com.example.marketplace.services.IPostLikeServ;
 import com.example.marketplace.services.IPostServ;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -107,7 +110,12 @@ public class ForumController {
     CommentLike addCommentLike(@RequestBody CommentLike c) {
         return iCommentLikeServ.addCommentLike(c);
     }
+    @PostMapping("/addImageToPost/{idpost}")
+    @ResponseBody
+    public ResponseEntity<?> addpostimage(@RequestParam MultipartFile image, @PathVariable("idpost") Integer idpost) throws IOException {
+        return iPostServ.addimagepost(image,idpost);
 
+    }
     @PutMapping("/updateCommentLike")
     CommentLike updateCommentLike(@RequestBody CommentLike c) {
         return iCommentLikeServ.updateCommentLike(c);
@@ -146,9 +154,9 @@ public class ForumController {
     public List<Comment> getAllCommentOfPost(@PathVariable("id") Integer id) {
         return iPostServ.getAllCommentOfPost(id);
     }
-    @GetMapping("/NbPostLike/{id}")
-    public int nbPostLike(@PathVariable("id") Integer id) {
-        return iPostServ.nbPostLike(id);
+    @GetMapping("/NbPostLikeTotal/{id}")
+    public int nbPostLikeToatal(@PathVariable("id") Integer id) {
+        return iPostServ.nbPostLikeTotal(id);
     }
     @GetMapping("/NbCommentLike/{id}")
     public int nbCommentLike(@PathVariable("id") Integer id) {
@@ -168,5 +176,9 @@ public class ForumController {
     @GetMapping("/bestPost")
     public Post bestPost() {
         return iPostServ.bestPost();
+    }
+    @GetMapping("/Statistique")
+    public String Statistique() {
+        return iPostServ.Statistique();
     }
 }

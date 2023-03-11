@@ -74,6 +74,10 @@ public class User implements Serializable {
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL,mappedBy = "reported")
     Set<Post> PostsSignale;
+    @JsonIgnore
+    Integer ban=0;
+    @JsonIgnore
+    LocalDateTime banTime;
     ////////////////Product///////////////////
 
     ///////////Panier/////////////

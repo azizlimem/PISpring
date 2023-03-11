@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,11 +18,13 @@ import java.util.Set;
 public class Post {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @JsonIgnore
     Integer idPost;
-    String image;
     String title;
-    @Temporal(TemporalType.DATE)
-    Date dateCre;
+    @JsonIgnore
+    LocalDateTime dateCre=LocalDateTime.now();
+    @JsonIgnore
+    boolean archiver;
     String Body;
     @JsonIgnore
     @ManyToOne
