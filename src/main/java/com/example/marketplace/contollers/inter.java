@@ -74,7 +74,7 @@ public class inter {
     }
 
     @GetMapping ("/calculsalaire/{iduser}")
-    public Float retournesalaire (@PathVariable Long iduser ){
+    public double retournesalaire (@PathVariable Long iduser ){
         return   recserv.retournesalaire(iduser);
     }
     @GetMapping("/listeproduits/{idproduitreclame}")

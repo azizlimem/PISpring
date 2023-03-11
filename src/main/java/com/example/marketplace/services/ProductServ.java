@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -98,6 +100,22 @@ public class ProductServ implements IProductServ {
         } else {
             return "No products found with quantity less than or equal to 2";
         }
+    }
+    @Scheduled(cron = "0 0 0 * * *")
+    public List<Product> getProductsBeforeOfExpiration() {
+        List<Product> p = new ArrayList<>();
+        iProductRepo.findAll().forEach(p::add);
+        List<Product> pnew=new ArrayList<>();
+        LocalDate threeDaysFromNow = LocalDate.now().plusDays(3);
+        for(int i=0;i<p.size();i++){
+
+            if(p.get(i).getDateExpiration().minusDays(3).isEqual(LocalDate.now())){
+                p.get(i).setPrice(p.get(i).getPrice()-p.get(i).getPrice()*0.3);
+                iProductRepo.save( p.get(i));
+                pnew.add(p.get(i));
+            }
+        }
+        return pnew;
     }
 
 }
