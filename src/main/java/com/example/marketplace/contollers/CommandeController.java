@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class CommandeController {
     private final ICommandeServices commandeServices;
     @Operation(description = "Add commande")
-    @PostMapping("/add")
-    Commande addCommande(@RequestBody Commande commande){
-        return commandeServices.addCommande(commande);
+    @PutMapping("/add/{id}")
+    Commande addCommande(@RequestBody Commande commande,@PathVariable("id") Integer idCommande){
+        return commandeServices.addCommande(commande,idCommande);
 
     }
 
@@ -39,5 +39,10 @@ public class CommandeController {
     void deleteCommande(@PathVariable("id") Integer id){
 
         commandeServices.removeCommande(id);
+    }
+    @Operation(description = "ajouter commande au charity")
+    @PutMapping("/add/{idCharity}/{idLigne}")
+    Commande addcommandeToCharity(@RequestBody Commande commande,@PathVariable("idCharity") Integer IdCharity,@PathVariable("idLigne") Integer IdLigne){
+        return commandeServices.addandaffectcommandeToCharity(commande,IdCharity,IdLigne);
     }
 }

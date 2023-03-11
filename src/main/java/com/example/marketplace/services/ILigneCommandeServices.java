@@ -7,5 +7,5 @@ public interface ILigneCommandeServices {
 
     LigneCommande updateLigneCommande(LigneCommande ligneCommande);
 
-    LigneCommande addLigneCommande(LigneCommande ligneCommande);
+    LigneCommande affecterpanierAndProductlignedecommande(LigneCommande ligneCommande, Integer idpanier, Integer idProduct);
 }

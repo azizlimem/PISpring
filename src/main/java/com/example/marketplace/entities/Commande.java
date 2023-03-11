@@ -27,6 +27,9 @@ public class Commande {
     @JsonIgnore
     @OneToOne(mappedBy = "commande")
     FactureCommande factureCommandes;
+    @JsonIgnore
+    @OneToOne(mappedBy = "commande")
+    Charity charity;
 
 
 }

@@ -6,15 +6,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/panier")
 public class PanierController {
       private final IPanierServices panierServices;
     @Operation(description = "Add panier")
-    @PostMapping("/add")
-    Panier addPanier(@RequestBody Panier panier){
-        return panierServices.addPanier(panier);
+    @PostMapping("/add/{id}")
+    Panier addPanier(@RequestBody Panier panier,@PathVariable("id") Integer IdUser){
+        return panierServices.addPanierandaffectoUser(panier,IdUser);
 
     }
 
@@ -37,4 +39,9 @@ public class PanierController {
 
         panierServices.removePanier(id);
     }
+    @GetMapping("/testttayoub")
+    void testttttttttt(){
+        panierServices.romoveListPanier();
+    }
+
 }
