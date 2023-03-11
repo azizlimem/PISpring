@@ -4,14 +4,11 @@ import com.example.marketplace.entities.User;
 import com.example.marketplace.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -22,11 +19,9 @@ public class UserService  implements IUserServices {
 
     private final IUserRepository userRepository;
     private final MailerService mailerService;
+    private final RandomString randomString;
 
-
-
-
-
+    private final PasswordEncoder encoder;
 
 
     @Override
@@ -36,15 +31,16 @@ public class UserService  implements IUserServices {
         return users;
     }
 
-    @Override
+   /* @Override
     public User addUser(User u){
-        String code = RandomStringUtils.randomAlphanumeric(8);
+       String code = randomString.randomGeneratedString(8);
         LocalDateTime d = LocalDateTime.now();
-        mailerService.sendEmail(u.getEmail(),"Account Creation"," Hello "+u.getFirstName()+" "+u.getLastName()+"\n Your account is almost created, please Login and write this code in the right field to complete your inscription !\n Your code is :"+ code);
-        u.setStatus(code);
+       mailerService.sendEmail(u.getEmail(),"Account Creation"," Hello "+u.getFirstName()+" "+u.getLastName()+"\n Your account is almost created, please Login and write this code in the right field to complete your inscription !\n Your code is :"+ code);
+    //    u.setStatus(code);
         u.setCreatedAt(d);
+
         return userRepository.save(u);
-    }
+    } */
 
     @Override
     public User updateUser(User u) {
@@ -70,28 +66,58 @@ public class UserService  implements IUserServices {
         User u = userRepository.findByEmail(email);
         if (u == null){
             return "Wrong or Unexisting Email";
-        } else if ((u.getStatus()).equals("verified")){
+        } else if (u.getStatus()){
             return "User already Verified";
-        } else if ((u.getStatus()).equals(code)){
-            u.setStatus("verified");
+        } else if ((u.getCode()).equals(code)){
+            u.setStatus(true);
+            u.setCode(null);
             userRepository.save(u);
             return "Your account is now Verified you can proceed to Logging In";
         } else return "Verification Code is Incorrect";
 
 
     }
-@Scheduled(cron="*/10 * * * * *")
+//@Scheduled(cron="*/10 * * * * *")
     public void DeleteNonVerifiedAccounts(){
-        String s ="verified";
         LocalDateTime d = LocalDateTime.now().minusHours(24);
         List<User> list = new ArrayList<>();
-        userRepository.findByStatusNotContainingAndCreatedAtIsBefore(s,d).forEach(list::add);
+        userRepository.findByStatusIsNullAndCreatedAtIsBefore(d).forEach(list::add);
         for (User u : list){
            System.out.println(u.getFirstName());
             userRepository.deleteById(u.getId());
         }
 
     }
+@Override
+    public String forgotPassword(String email){
+        User u = userRepository.findByEmail(email);
+        if (u == null ){
+            return "User not found ! ";
+        }
+        else {
+            String code = randomString.randomGeneratedString(8);
+            u.setCode(code);
+            userRepository.save(u);
+            mailerService.sendEmail(email, "Account Recovery", "Please use this code : " + code + "to recover your account !  ");
+            return "Recovery Code sent successfully to your Email ! ";
+        }
+
+}
+
+public String resetPassword(String verifCode,String newPass){
+        User u = userRepository.findByCode(verifCode);
+    if (u == null ){
+        return "Wrong Code ! ";
+    }
+    else {
+        u.setPassword(encoder.encode(newPass));
+        u.setCode(null);
+        userRepository.save(u);
+    }
+    return "Your password is Changed Successfully ! Please Proceed to Logging In " ;
+
+}
+
 
 
 
