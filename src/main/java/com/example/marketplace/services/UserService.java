@@ -80,7 +80,7 @@ public class UserService  implements IUserServices {
 
 
     }
-@Scheduled(cron="*/10 * * * * *")
+//@Scheduled(cron="*/10 * * * * *")
     public void DeleteNonVerifiedAccounts(){
         String s ="verified";
         LocalDateTime d = LocalDateTime.now().minusHours(24);
