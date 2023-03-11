@@ -1,15 +1,20 @@
 package com.example.marketplace.entities;
 
-import com.example.marketplace.enumerations.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,17 +23,38 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Integer idUser;
-    String nomUser;
-    String prenomUser;
-    String username;
-    String password;
-    String emailUser;
-    @Enumerated(EnumType.STRING)
-    UserRole role;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Setter(value = AccessLevel.NONE)
+    private Integer id;
+
+    @NonNull
+    private String firstName;
+    @NonNull
+    private String lastName;
+    @NonNull
+    private String username;
+    @NonNull
+    private String email;
+    @NonNull
+    private String password;
+    private Integer nbrpoints;
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    Set<Role> roles = new HashSet<>();
     String cinUser;
     String phoneNumber;
+    @JsonIgnore
+  Boolean status;
+    @JsonIgnore
+    String photo;
+    @JsonIgnore
+    String code;
+    @JsonIgnore
+    LocalDateTime createdAt;
+    /////////////////////MARKET///////////////
     @JsonIgnore
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     Market market;
@@ -45,24 +71,35 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     Set<CommentLike> commentLikes;
-    ////////////////Product///////////////////
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    Set<Rating> ratings;
+    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "reported")
+    Set<Post> PostsSignale;
+    ////////////////Product///////////////////
+
     ///////////Panier/////////////
     @JsonIgnore
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     Panier panier;
 //////reclamation//////
-@OneToMany(mappedBy="userrr",cascade = CascadeType.ALL)
-@JsonIgnore
-                Set<Reclamation> userrec;
+    @OneToMany(mappedBy="userrr",cascade = CascadeType.ALL)
+    @JsonIgnore
+    Set<Reclamation> userrec;
 ////intervention /////
+
 @OneToMany(mappedBy="userrrr",cascade = CascadeType.ALL)
-                Set<Intervention> interuser;
+@JsonIgnore
+Set<Intervention> interuser;
 
 ///Livreur/////
-    @OneToOne( cascade = CascadeType.ALL)
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private Livreur livreur;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "users" ,cascade = CascadeType.ALL)
+    Set<Rating> ratings;
+
+
+
 }

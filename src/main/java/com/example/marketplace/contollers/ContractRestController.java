@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/contract")
-@Tag(name = "Contract Management")
+
 public class ContractRestController {
     private final IContractServices contractServices;
 

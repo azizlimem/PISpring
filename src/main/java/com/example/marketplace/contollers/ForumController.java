@@ -1,9 +1,6 @@
 package com.example.marketplace.contollers;
 
-import com.example.marketplace.entities.Comment;
-import com.example.marketplace.entities.CommentLike;
-import com.example.marketplace.entities.Post;
-import com.example.marketplace.entities.PostLike;
+import com.example.marketplace.entities.*;
 import com.example.marketplace.services.ICommentLikeServ;
 import com.example.marketplace.services.ICommentServ;
 import com.example.marketplace.services.IPostLikeServ;
@@ -127,27 +124,49 @@ public class ForumController {
     }
 
     ///////////////////////////Affecter///////////////////////////////
-    @PutMapping("/AssignPostLiketoPost/{idPost}")
-    public PostLike addAndAssignPostLiketoPost(@RequestBody PostLike postLike, @PathVariable("idPost") Integer IdPost) {
-        return iPostLikeServ.addAndAssignPostLikeToPost(postLike, IdPost);
+    @PutMapping("/addAndAssignPostLiketoPostAndUser/{idPost}/{idUser}")
+    public PostLike addAndAssignPostLiketoPostAndUser(@RequestBody PostLike postLike, @PathVariable("idPost") Integer IdPost, @PathVariable("idUser") Integer idU) {
+        return iPostLikeServ.addAndAssignPostLikeToPostAndUser(postLike,IdPost,idU);
     }
 
     @PutMapping("/AssignCommentLiketoComment/{idComment}")
-    public CommentLike addAndAssignPostLiketoPost(@RequestBody CommentLike commentLike, @PathVariable("idComment") Integer idComment) {
+    public CommentLike addAndAssignCommentLiketoComment(@RequestBody CommentLike commentLike, @PathVariable("idComment") Integer idComment) {
         return iCommentLikeServ.addAndAssignCommentLikeToComment(commentLike, idComment);
     }
-    @PutMapping("/AssignCommentCommentToPost/{idPost}")
-    public Comment addAndAssignPostLiketoPost(@RequestBody Comment comment, @PathVariable("idPost") Integer IdPost) {
-        return iCommentServ.addAndAssignCommentToPost(comment, IdPost);
+    @PutMapping("/addAndAssignCommenttoPostAndUser/{idPost}/{idUser}")
+    public Comment addAndAssignCommenttoPostAndUser(@RequestBody Comment comment, @PathVariable("idPost") Integer IdPost, @PathVariable("idUser") Integer IdUser) {
+        return iCommentServ.addAndAssignCommentToPostUser(comment, IdPost,IdUser);
+    }
+    @PutMapping("/addAndAssignPostToUser/{idPost}/{idUser}")
+    public Post addAndAssignPostToUser(@RequestBody Post post,@PathVariable("idUser") Integer idUser) {
+        return iPostServ.addAndAssignPostToPostUser(post,idUser);
     }
     ////////////////////////////QUERY/////////////////////////////////////
-    @GetMapping("/getAllCommentOdPost/{id}")
-    public List<Comment> getAllCommentOdPost(@PathVariable("id") Integer id) {
+    @GetMapping("/getAllCommentOfPost/{id}")
+    public List<Comment> getAllCommentOfPost(@PathVariable("id") Integer id) {
         return iPostServ.getAllCommentOfPost(id);
     }
     @GetMapping("/NbPostLike/{id}")
     public int nbPostLike(@PathVariable("id") Integer id) {
         return iPostServ.nbPostLike(id);
     }
+    @GetMapping("/NbCommentLike/{id}")
+    public int nbCommentLike(@PathVariable("id") Integer id) {
+        return iCommentServ.nbCommentLike(id);
+    }
+    @PutMapping("/SignalerPost/{idP}/{idU}")
+    public void SignalerPost(@PathVariable("idP") Integer idP,@PathVariable("idU") Integer idU) {
+         iPostServ.affecterSignal(idP,idU);
+    }
+    @GetMapping("/NbSignale/{id}")
+    public int NBtest(@PathVariable("id") Integer id) {
+        return iPostServ.NbSignale(id);
+    }
 
+
+
+    @GetMapping("/bestPost")
+    public Post bestPost() {
+        return iPostServ.bestPost();
+    }
 }

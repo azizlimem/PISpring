@@ -4,13 +4,16 @@ import com.example.marketplace.entities.Intervention;
 import com.example.marketplace.entities.Product;
 import com.example.marketplace.entities.Reclamation;
 import com.example.marketplace.enumerations.Statuss;
+import com.example.marketplace.enumerations.Sujetrec;
 import com.example.marketplace.services.InterventionServ;
 import com.example.marketplace.services.RecService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class inter {
@@ -66,7 +69,7 @@ public class inter {
     public Reclamation updatereccc ( @PathVariable Long idrec,@RequestBody Reclamation  i){
         return recserv.updatereclamation2(idrec,i);
     }
-    @GetMapping("/nombredereclamation")
+    @GetMapping("/nombredereclamationlivreur")
     public int nbrrec(Long iduser){
         return   recserv.countReclamation(iduser);
     }
@@ -79,10 +82,7 @@ public class inter {
     public List<Product> afficherproduitsimilaire(@PathVariable int idproduitreclame){
         return recserv.afficherproduitssimilaires(idproduitreclame);
     }
-    @GetMapping("/latailledelapriorite/{idrec}")
-    public int taille(@PathVariable Long idrec){
-        return  recserv.prioritecondition(idrec);
-    }
+
     @GetMapping("/order")
     public   List<Reclamation> order1(){
         return  recserv.order();
@@ -90,6 +90,33 @@ public class inter {
     @GetMapping("/calculdeladatedefindeinter/{idinter}")
     public LocalDate calculerDateFinIntervention(@PathVariable Long idinter){
          return recserv.calculerDateFinIntervention(idinter);
+
+    }
+    @GetMapping("/nbrdemotsdanspriorite/{idrec}")
+    public String nbrdemotsdanspriorite(@PathVariable Long idrec){
+        return recserv.compteurdenrbdemots(idrec);
+
+    }
+    @GetMapping("/nombredereclamationsproduit/{description}/{id}")
+    Integer nombredereclamationdunproduit(@PathVariable Sujetrec description,@PathVariable Integer id){
+        return recserv.nombredereclamationdunproduit(description,id);
+    }
+    @GetMapping("/prixproduits/{description}/{idprodrec}")
+   public  void prixproduit (@PathVariable Sujetrec description,@PathVariable Integer idprodrec){
+        recserv.prixproduit(  description, idprodrec);
+   }
+    @GetMapping("/listemotspositifs/{filePath}")
+    public   List<List<String>> readExcellistemotspositifs(String filePath) throws IOException {
+        return recserv.readExcel(filePath);
+    }
+    @GetMapping("scoresatisfaction/{filepath}/{filepathneutre}/{filepathnegatifs}")
+    public  String retournescoredesatisfactionclient1(String filepath,String filepathneutre,String filepathnegatifs) throws IOException {
+        return   recserv.retournescoredesatisfactionclient(filepath,filepathneutre,filepathnegatifs);
+    }
+
+    @GetMapping("lemeilleuremployebrusque")
+    public String lemeilleureemployedeumois(){
+        return   recserv.lemeilleureemployedeumois();
 
     }
 }

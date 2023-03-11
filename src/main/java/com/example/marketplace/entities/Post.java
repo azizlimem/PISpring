@@ -31,5 +31,7 @@ public class Post {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     Set<Comment> Comments;
-
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    Set<User> reported;
 }

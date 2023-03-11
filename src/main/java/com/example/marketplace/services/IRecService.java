@@ -3,7 +3,9 @@ package com.example.marketplace.services;
 import com.example.marketplace.entities.Product;
 import com.example.marketplace.entities.Reclamation;
 import com.example.marketplace.enumerations.Statuss;
+import com.example.marketplace.enumerations.Sujetrec;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,7 +22,13 @@ public interface IRecService {
     Float retournesalaire (Long idc1) ;
    // void desactiveruser (Long iduser2);
     List <Product> afficherproduitssimilaires (Integer  idprodrec);
-    int prioritecondition(Long idrec );
+
     List<Reclamation> order();
     LocalDate calculerDateFinIntervention(Long idinter);
+    String compteurdenrbdemots (Long idrec);
+    void prixproduit (Sujetrec description,Integer idprodrec);
+    Integer nombredereclamationdunproduit(Sujetrec description,Integer id);
+    List<List<String>> readExcel(String filePath) throws IOException;
+    String retournescoredesatisfactionclient (String filepath, String filepathneutre,String filepathnegatifs)throws IOException ;
+    String lemeilleureemployedeumois();
 }

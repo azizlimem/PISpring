@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
 import java.util.Date;
 
 @Setter
@@ -29,11 +30,10 @@ public class Livraison {
     Integer numerotel;
     @NotNull
     String mail;
-    Integer idlivreur;
     @Temporal(TemporalType.DATE)
     private Date dateLivraison;
-    float latitude;
-    float longitude;
+ //   float latitude;
+ //   float longitude;
     @Enumerated(EnumType.STRING)
     Type_livraison typelivraison;
     @Enumerated(EnumType.STRING)
