@@ -49,7 +49,7 @@ public class LigneCommandeServices implements ILigneCommandeServices {
         }
         Date d=new Date();
       panier1.setDateExpirationPanier(d);
-      panier1.setPrixTotal(panier1.getPrixTotal()+ product1.getPrice());
+      panier1.setPrixTotal((float) (panier1.getPrixTotal()+ product1.getPrice()));
         return ligneCommandeRepo.save(ligneCommande);
 //        Set<Product> products=new HashSet<>();
      //
