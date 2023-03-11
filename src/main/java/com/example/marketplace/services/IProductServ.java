@@ -18,5 +18,6 @@ public interface IProductServ extends Serializable {
     public NutriscoreCategorie NutriscoreCategorie(int idProduit);
     public List<Product> filterByPrice(Float price);
     public String showAlert();
+    public List<Product> getProductsBeforeOfExpiration();
 
 }

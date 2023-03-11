@@ -19,7 +19,7 @@ public interface IRecService {
     void updatereclamation(Long idrec, Statuss ticketstatus);
     Reclamation updatereclamation2 (Long idrec, Reclamation  i);
     int countReclamation (Long iduser);
-    Float retournesalaire (Long idc1) ;
+    double retournesalaire (Long idc1) ;
    // void desactiveruser (Long iduser2);
     List <Product> afficherproduitssimilaires (Integer  idprodrec);
 

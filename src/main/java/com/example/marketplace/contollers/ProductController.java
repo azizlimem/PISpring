@@ -59,6 +59,10 @@ public class ProductController {
     public String showAlert() {
         return iProductServ.showAlert();
     }
+    @GetMapping("/remise")
+    public List<Product> getProductsBefore3DaysOfExpiration() {
+        return iProductServ.getProductsBeforeOfExpiration();
+    }
 
 
 }

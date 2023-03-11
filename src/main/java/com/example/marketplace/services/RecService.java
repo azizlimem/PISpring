@@ -99,7 +99,7 @@ public class RecService implements  IRecService {
         return prodrepo.nombredereclamationdunproduit(description,id);
     }
 
-    public Float calculatePercentage(Float numerator, int denominator) {
+    public double calculatePercentage(double numerator, int denominator) {
         return (numerator * denominator) / 100;
     }
     // @Override
@@ -113,8 +113,8 @@ public class RecService implements  IRecService {
     // amalfares.setActif(false);
     //clrepo.save(amalfares);}}
     @Override
-    public Float retournesalaire(Long idlivreur) {
-        Float salaire = (float) 0.0;
+    public double retournesalaire(Long idlivreur) {
+        double salaire = (float) 0.0;
         Livreur amalfares = livrepo.findById(idlivreur).orElse(null);
         if (countReclamation(idlivreur) == 1) {
             salaire = calculatePercentage(amalfares.getSalaire(), 90);
@@ -129,13 +129,13 @@ public class RecService implements  IRecService {
     @Override
     public List<Product> afficherproduitssimilaires(Integer idprodrec) {
        Product produitreclame = prodrepo.findById(idprodrec).orElse(null);
-        Float prixreclame = produitreclame.getPrice();
+        double prixreclame = produitreclame.getPrice();
         Categorie categoriereclame = produitreclame.getCategorie();
         List<Product> p = new ArrayList<>();
         prodrepo.findAll().forEach(p::add);
         List<Product> produitajouterprodsimil = new ArrayList<>();
         for (Product product : p) {
-            if (product.getId() != produitreclame.getId() && product.getCategorie().equals(categoriereclame) && product.getPrice().equals(prixreclame)) {
+            if (product.getId() != produitreclame.getId() && product.getCategorie().equals(categoriereclame) && product.getPrice()==(prixreclame)) {
 
                 produitajouterprodsimil.add(product);
             }

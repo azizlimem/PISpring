@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -23,10 +24,10 @@ public class Product {
 
     private  String image;
 
-    private Float price;
+    private double price;
 
-    @Temporal(TemporalType.DATE)
-    private Date dateExpiration;
+
+    private LocalDate dateExpiration;
 
     private String name;
     private Integer Nutriscore;
