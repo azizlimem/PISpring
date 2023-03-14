@@ -63,8 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests().antMatchers( "/swagger-ui/index.html").permitAll()
             .antMatchers("/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","http://localhost:8188/SpringMVC/auth/verification","**").permitAll()
             .antMatchers("/v2/api-docs", "/v3/api-docs", "/configuration/**","/swagger**/**", "/webjars/**").permitAll()
-            //.antMatchers("/admin").hasRole("ADMIN")
-           // .antMatchers("http://localhost:8188/SpringMVC/user/all","http://localhost:8188/SpringMVC/user/add").hasRole("LIVREUR")
             .antMatchers("/test/**").permitAll()
             .anyRequest().authenticated();
 
