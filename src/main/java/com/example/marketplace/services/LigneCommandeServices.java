@@ -1,6 +1,5 @@
 package com.example.marketplace.services;
 
-import com.example.marketplace.entities.Commande;
 import com.example.marketplace.entities.LigneCommande;
 import com.example.marketplace.entities.Panier;
 import com.example.marketplace.entities.Product;
@@ -36,21 +35,29 @@ public class LigneCommandeServices implements ILigneCommandeServices {
     @Override
     public LigneCommande affecterpanierAndProductlignedecommande(LigneCommande ligneCommande, Integer idpanier, Integer idProduct) {
         Panier panier1 =panierRepo.findById(idpanier).orElse(null);
+        //Commande commande=commandeRepo.findById(idCommande).orElse(null);
         Product product1=productRepo.findById(idProduct).orElse(null);
+       // LigneCommande ligneCommande=ligneCommandeRepo.findById(idligneCommande).orElse(null);
+       // ligneCommande.setCommande(commande);
         ligneCommande.setPaniers(panier1);
         if(ligneCommande.getProducts()==null){
-            System.out.println("awel mara");
+            System.out.println("first time");
             Set<Product> pr=new HashSet<>();
             pr.add(product1);
             ligneCommande.setProducts(pr);
         }else{
-            System.out.println("deja 3ando");
+            System.out.println("exist");
             ligneCommande.getProducts().add(product1);
         }
         Date d=new Date();
       panier1.setDateExpirationPanier(d);
       panier1.setPrixTotal((float) (panier1.getPrixTotal()+ product1.getPrice()));
         return ligneCommandeRepo.save(ligneCommande);
+
+
+
+
+
 //        Set<Product> products=new HashSet<>();
      //
 //        ligneCommande.setProducts(products);
