@@ -83,13 +83,23 @@ private final IUserRepository userRepository;
         panierRepo.deleteById(idPanier);
 
     }
-    //@Scheduled(cron="*/10 * * * * * ")
+    @Scheduled(cron="*/10 * * * * * ")
     public void romoveListPanier(){
+      // Panier panier=new Panier();
+     //   LocalDate datePanier = new java.sql.Date(panier.getDatePanier().getTime()).toLocalDate();
        List<Panier> p=panierRepo.listPanier();
         for (int i=0;i<p.size();i++){
             System.out.println(p.get(i).getIdPanier());
-             int a=p.get(i).getIdPanier();
-            panierRepo.deleteById(a);
+            Panier panier=p.get(i);
+            p.get(i).setUser(null);
+            Integer p1=p.get(i).getIdPanier();
+            System.out.println("panier est selecté");
+
+            panierRepo.delete(panier);
+            System.out.println("bb");
+
         }
+        //panierRepo.save(p);
+
     }
 }

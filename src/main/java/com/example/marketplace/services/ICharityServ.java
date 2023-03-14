@@ -1,15 +1,12 @@
-package com.example.marketplace.services;
-
-import com.example.marketplace.entities.Charity;
-
-public interface ICharityServ {
-   
-
-    Charity addCharity(Charity charity, Integer idCh);
-
-    Charity updateCharity(Charity charity);
-
-    Charity retrieveCharity(Integer id);
-
-    void removeCharity(Integer id);
-}
+//package com.example.marketplace.services;
+//
+//import com.example.marketplace.entities.Charity;
+//import com.example.marketplace.entities.Commande;
+//import org.springframework.data.repository.CrudRepository;
+//
+//public interface ICharityServ  extends CrudRepository<Charity,Integer> {
+//
+//
+//
+//
+//}

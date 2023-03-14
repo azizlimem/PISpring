@@ -126,9 +126,23 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-
-
-
+        <!--pdf loul-->
+<!--        <dependency>-->
+<!--        <groupId>com.itextpdf</groupId>-->
+<!--        <artifactId>itext7-core</artifactId>-->
+<!--        <version>7.1.16</version>-->
+<!--    </dependency>-->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+            <version>1.3.8</version>
+        </dependency>
+        <!--sqlbatch test-->
+<!--        <dependency>-->
+<!--            <groupId>mysql</groupId>-->
+<!--            <artifactId>mysql-connector-java</artifactId>-->
+<!--            <version>8.0.25</version>-->
+<!--        </dependency>-->
 
     </dependencies>
 

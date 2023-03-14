@@ -8,8 +8,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 public interface IPanierRepo extends CrudRepository<Panier,Integer> {
-    @Query("select p from Panier p where p.datePanier+hour(48)<CURRENT_DATE ")
-    public List<Panier> listPanier();
+//CURRENT_DATE
+    @Query("select p from Panier p where p.datePanier+hour(48)<CURRENT_DATE")
+     public List<Panier> listPanier();
+
+
 
 
 //    @Query("select count(p.prixTotal) from Panier p where p.idPanier = :IdP")

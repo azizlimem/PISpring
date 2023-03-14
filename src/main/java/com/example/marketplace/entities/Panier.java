@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -22,7 +23,9 @@ public class Panier {
     Date datePanier;
     @Temporal(TemporalType.DATE)
     Date dateExpirationPanier;
+
     float remise=0.8f;
+    int Bonus;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "paniers")
