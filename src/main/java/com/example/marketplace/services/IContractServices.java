@@ -7,9 +7,9 @@ import java.util.List;
 public interface IContractServices {
     List<Contract> retrieveAllContracts();
 
-    Contract addContract (Contract c);
+    Contract addContract (Contract c , Integer id);
 
-    Contract updateContract (Contract c);
+    String updateContract (Contract c,Integer nbr);
 
     Contract retrieveContract(Integer idContract);
 

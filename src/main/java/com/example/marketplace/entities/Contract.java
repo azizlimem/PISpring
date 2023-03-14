@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -20,13 +20,20 @@ public class Contract implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer idContract;
+    @JsonIgnore
     Integer price;
+    Integer nbrMonths;
+    @JsonIgnore
+    Integer discount;
+    @JsonIgnore
+    Boolean paid;
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     PackType packType;
-    @Temporal(TemporalType.DATE)
-    Date dateDebutContract;
-    @Temporal(TemporalType.DATE)
-    Date dateFinContract;
+    @JsonIgnore
+    LocalDateTime dateDebutContract;
+    @JsonIgnore
+    LocalDateTime dateFinContract;
     @JsonIgnore
     @OneToOne
     private Market market;

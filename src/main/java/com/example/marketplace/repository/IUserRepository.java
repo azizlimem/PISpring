@@ -27,6 +27,7 @@ public interface IUserRepository extends CrudRepository<User,Integer>, JpaReposi
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);
+    User findUserByUsername(String username);
 
 
 
