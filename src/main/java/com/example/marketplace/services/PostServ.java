@@ -1,27 +1,13 @@
 package com.example.marketplace.services;
-
-import com.example.marketplace.entities.Comment;
-import com.example.marketplace.entities.Media;
-import com.example.marketplace.entities.Post;
-import com.example.marketplace.entities.User;
+import com.example.marketplace.entities.*;
 import com.example.marketplace.repository.IPostRepo;
 import com.example.marketplace.repository.IUserRepository;
-import com.example.marketplace.repository.MediaRepo;
+import com.example.marketplace.repository.ImageRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 
@@ -33,10 +19,9 @@ public class PostServ implements IPostServ {
     final IPostRepo iPostRepo;
     final IUserRepository iUserRepository;
     final MailerService mailerService;
-    @Autowired
-    CloudinaryService cloudImage;
-    @Autowired
-    MediaRepo mediaRepo;
+    final CloudinaryService cloudImage;
+    final ImageRepo mediaRepo;
+
     @Override
     public List<Post> getAllPost() {
         List<Post> p = new ArrayList<>();
@@ -45,10 +30,41 @@ public class PostServ implements IPostServ {
     }
 
     @Override
-    public Post updatePost(Post c) {
-        return iPostRepo.save(c);
-    }
+    public Post updatePost(Post post) {
+        User u = iUserRepository.findById(post.getUser().getId()).orElse(null);
+        LocalDateTime time1 = LocalDateTime.now();
+        BadWordImpl b = new BadWordImpl();
+        if (b.filterText(post.getBody()) || b.filterText(post.getTitle())) {
+            if (u.getBan() == null) {
+                u.setBan(0);
+            }
+            if (u.getBan() == 0) {
+                System.out.println("warning of bad words");
+            }
+            if (u.getBan() == 1) {
+                System.out.println("you have banned for 1h");
+                u.setBanTime(time1.plusHours(1));
+            }
+            if (u.getBan() == 2) {
+                System.out.println("you have banned for 24h");
+                u.setBanTime(time1.plusDays(1));
+            }
+            if (u.getBan() == 3) {
+                System.out.println("you have banned for 1 month");
+                u.setBanTime(time1.plusMonths(1));
+            }
+            if (u.getBan() == 4) {
+                System.out.println("you have banned for 100 years");
+                u.setBanTime(time1.plusYears(100));
+            }
 
+            u.setBan(u.getBan()+1);
+            iUserRepository.save(u);
+            return null;
+        }
+        post.setUser(u);
+        return iPostRepo.save(post);
+    }
     @Override
     public Post addPost(Post c) {
         return iPostRepo.save(c);
@@ -61,7 +77,10 @@ public class PostServ implements IPostServ {
 
     @Override
     public void removePost(Integer idC) {
+        Post p=iPostRepo.findById(idC).orElse(null);
+        p.setUser(null);
         iPostRepo.deleteById(idC);
+
     }
 
     @Override
@@ -71,45 +90,47 @@ public class PostServ implements IPostServ {
 
 
     @Override
-    public Post addAndAssignPostToPostUser(Post post, Integer id) {
+    public String addAndAssignPostToPostUser(Post post, Integer id) {
         User u = iUserRepository.findById(id).orElse(null);
+        String message="";
         LocalDateTime time1 = LocalDateTime.now();
-        badWordImpl b = new badWordImpl();
-        if (b.filterText(post.getBody()) == true || b.filterText(post.getTitle()) == true) {
-
+        BadWordImpl b = new BadWordImpl();
+        if (b.filterText(post.getBody())||b.filterText(post.getTitle())) {
+            if(u.getBan()==null){
+                u.setBan(0);
+            }
             if(u.getBan()==0){
-                System.out.println("warning of bad words");
+                message="warning of bad words";
             }
             if(u.getBan()==1){
-                System.out.println("you have banned for 1h");
+                message="you have banned for 1h";
                 u.setBanTime(time1.plusHours(1));
             }
             if(u.getBan()==2) {
-                System.out.println("you have banned for 24h");
+                message="you have banned for 24h";
                 u.setBanTime(time1.plusDays(1));
             }
             if(u.getBan()==3) {
-                System.out.println("you have banned for 1 month");
+                message="you have banned for 1 month";
                 u.setBanTime(time1.plusMonths(1));
             }
             if(u.getBan()==4) {
-                System.out.println("you have banned for 100 years");
-                u.setBanTime(time1.plusYears(99));
+                message="you have banned for 100 years";
+                u.setBanTime(time1.plusYears(100));
             }
 
             u.setBan(u.getBan()+1);
             iUserRepository.save(u);
-            return null;
+            return message;
         }
         post.setUser(u);
-        return iPostRepo.save(post);
+        iPostRepo.save(post);
+        return "Post is added successfully!" ;
     }
-
     @Override
     public int nbPostLikeTotal(Integer id) {
         return iPostRepo.nbPostLikeTotal(id);
     }
-
     @Override
     public void affecterSignal(Integer idP, Integer idU) {
         User u = iUserRepository.findById(idU).orElse(null);
@@ -122,23 +143,22 @@ public class PostServ implements IPostServ {
     public int NbSignale(Integer id) {
         int x = 0;
         Post p = iPostRepo.findById(id).get();
-        if (p == null) {
-            return x;
-        }
         for (int i = 0; i < p.getReported().size(); i++) {
             x++;
         }
         return x;
     }
-
- //   @Scheduled(cron = "*/10 * * * * *")
-    public void ArchiverAutomatique() {
+  //  @Scheduled(cron = "*/10 * * * * *")
+    @Override
+    public String ArchiverAutomatique() {
         for (Post post : iPostRepo.findAll()) {
-            if (post.getReported().size() > 4) {
+            if (post.getReported().size() > 0) {
                 post.setArchiver(true);
                 iPostRepo.save(post);
+                return post.getUser().getFirstName()+" your post is archived";
             }
         }
+        return null;
     }
 
 
@@ -150,67 +170,50 @@ public class PostServ implements IPostServ {
 
         for (Post post : iPostRepo.findAll()) {
             int total=0;
-            if(post.isArchiver()==true){
+            if(post.isArchiver()==false){
+                if(post.getDateCre().plusDays(7).isAfter(LocalDateTime.now())){
                 total=total+(iPostRepo.nbLovePost(post.getIdPost()))*2+(iPostRepo.nbLIKEPost(post.getIdPost()))-(iPostRepo.nbDISLIKEPost(post.getIdPost()))-(iPostRepo.nbDISLIKEPost(post.getIdPost()))*2;
                 if (total>totalFinal){
                     totalFinal=total;
                     x = post.getIdPost();
                 }
-            }
-
+            }}
         }
         if (x != 0) {
             Post y = iPostRepo.findById(x).orElse(null);
             Date d = new Date();
-            mailerService.sendEmail(y.getUser().getEmail(), "Best Post Winner", " Hello " + y.getUser().getFirstName() + " " + y.getUser().getLastName() + "\n Your Post is the best for week " + d + "\n");
+            mailerService.sendEmail(y.getUser().getEmail(), "Best Post Winner", "Hello " + y.getUser().getFirstName() + " " + y.getUser().getLastName() + "\nYour Post is the best with "+totalFinal +"Point \nFor week " + d + "\n");
             return y;
-
         }
         return null;
     }
     @Override
     public String Statistique(){
+
         int user_nbPost=0,user_nbComment=0;
-        String user_BestPost="",user_BestComment="";
+        String user_BestPost="",user_BestComment="",RolePost="",RoleComment="";
         String t;
         for(User u:iUserRepository.findAll()){
             if(iPostRepo.mostUserPost(u.getId())>user_nbPost){
-                user_BestPost="";///vider la chaine
                 user_nbPost=iPostRepo.mostUserPost(u.getId());///nb Post
                 user_BestPost=u.getFirstName()+" "+u.getLastName();///get nom et prenom
+                for(Role r:u.getRoles()){
+                    RolePost=r.getName().toString();
+                }
             }
             if(iPostRepo.mostUserComment(u.getId())>user_nbComment){
-                user_BestComment="";
                 user_nbComment=iPostRepo.mostUserComment(u.getId());
                 user_BestComment=u.getFirstName()+" "+u.getLastName();
+                for(Role r:u.getRoles()){
+                    RoleComment=r.getName().toString();
+                }
             }
-
         }
-        t="User: "+user_BestPost+" have the most number of posts with "+user_nbPost+"\n"+"User: "+user_BestComment+" have the most number of comments with "+user_nbComment;
-
+        t="User: "+user_BestPost+" with role "+RolePost+" have the most number of posts with "+user_nbPost+"\n"+"User: "+user_BestComment+" with role "+RoleComment+" have the most number of comments with "+user_nbComment+" \n"+"All rect For Post are:"+iPostRepo.React();
         return t;
     }
-
-
-    public ResponseEntity<?> addimagepost(MultipartFile image, Integer idpost) throws IOException {
-        Post p = iPostRepo.findById(idpost).orElse(null);
-
-        BufferedImage bi = ImageIO.read(image.getInputStream());
-
-        Map result = cloudImage.upload(image);
-
-        Media media = new Media((String)
-                result.get("original_filename")
-                , (String) result.get("url"),
-                (String) result.get("public_id"));
-        media.setPost(p);
-        mediaRepo.save(media);
-        return ResponseEntity.status(HttpStatus.OK).body("Image added to post");
-    }
-}
-
-
-
-
     
 
+
+
+}

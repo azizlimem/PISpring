@@ -40,7 +40,7 @@ public class User implements Serializable {
     private Integer nbrpoints;
     private Integer pointsFidelite;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -48,7 +48,7 @@ public class User implements Serializable {
     String cinUser;
     String phoneNumber;
     @JsonIgnore
-  Boolean status;
+    Boolean status;
     @JsonIgnore
     String photo;
     @JsonIgnore

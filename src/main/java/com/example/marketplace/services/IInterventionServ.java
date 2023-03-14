@@ -13,4 +13,5 @@ public interface IInterventionServ {
 
     void updateintervention( Long id,Integer dureeinter);
     Intervention updateintervention2 (Long id, Intervention  i);
+    void affecteradminintervention(Integer idadmin,Long idinter);
 }
