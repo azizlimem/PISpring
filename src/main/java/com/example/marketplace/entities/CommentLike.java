@@ -1,13 +1,9 @@
 package com.example.marketplace.entities;
-
-
 import com.example.marketplace.enumerations.React;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
 import javax.persistence.*;
-import java.util.Date;
-
+import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
@@ -17,10 +13,12 @@ import java.util.Date;
 public class CommentLike {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Integer idPostLike;
+    @JsonIgnore
+    Integer idCommentLike;
     @Enumerated(EnumType.STRING)
     React react;
-    Date CommentLikeDate;
+    @JsonIgnore
+    LocalDateTime CommentLikeDate=LocalDateTime.now();
     @JsonIgnore
     @ManyToOne
     User user;

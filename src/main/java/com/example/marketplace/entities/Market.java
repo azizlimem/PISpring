@@ -22,13 +22,13 @@ public class Market implements Serializable {
     String immatriculation;
     String marketAddress;
     String phoneNumber;
-
     @JsonIgnore
     @OneToOne(mappedBy = "market", cascade = CascadeType.ALL)
     private Contract contract;
     @JsonIgnore
     @OneToOne
     private User user;
+    @JsonIgnore
     @OneToOne(mappedBy = "market")
     Catalogue catalogue;
 }

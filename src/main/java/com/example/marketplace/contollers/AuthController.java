@@ -13,7 +13,6 @@ import com.example.marketplace.services.IUserServices;
 import com.example.marketplace.services.MailerService;
 import com.example.marketplace.services.RandomString;
 import com.example.marketplace.services.UserDetailsImpl;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -114,29 +113,34 @@ public class AuthController {
         Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.USER)
+            Role userRole = roleRepository.findByName(ERole.ROLE_CLIENT)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ADMIN)
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
                         break;
-                    case "mod":
-                        Role modRole = roleRepository.findByName(ERole.MODERATOR)
+                    case "moderator":
+                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
                         break;
                     case "livreur":
-                        Role livRole = roleRepository.findByName(ERole.LIVREUR)
+                        Role livRole = roleRepository.findByName(ERole.ROLE_LIVREUR)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(livRole);
                         break;
+                    case "client":
+                        Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(clientRole);
+
                     default:
-                        Role userRole = roleRepository.findByName(ERole.USER)
+                        Role userRole = roleRepository.findByName(ERole.ROLE_CLIENT)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
                 }

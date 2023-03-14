@@ -52,11 +52,11 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "gestion des ressources humaines REST API",
+                "e-commerce REST API",
                 "This API serves to test end points of the application",
                 "1.0",
                 "Terms of service",
-                new Contact("achref Benhadjyahia", "https://github.com/benhadjyahia", "achref.benhadjyahia@esprit.com"),
+                new Contact("ayoub belhadjyahia", "https://github.com/ayoubbelhadjyahia", "ayoub.belhadjyahia"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList());
