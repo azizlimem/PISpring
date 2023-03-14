@@ -1,35 +1,31 @@
 package com.example.marketplace.services;
 
+import com.example.marketplace.entities.Catalogue;
 import com.example.marketplace.entities.Product;
-import com.example.marketplace.enumerations.Categorie;
+import com.example.marketplace.entities.Rating;
+import com.example.marketplace.entities.User;
 import com.example.marketplace.enumerations.NutriscoreCategorie;
+import com.example.marketplace.repository.ICatalogueRepo;
 import com.example.marketplace.repository.IProductRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class ProductServ implements IProductServ {
+    private final ICatalogueRepo iCatalogueRepo;
 
     IProductRepo iProductRepo;
+    ICatalogueRepo catalogueRepo;
 
     @Override
     public Product addProduct(Product product) {
@@ -59,34 +55,38 @@ public class ProductServ implements IProductServ {
 
     }
 
-    public NutriscoreCategorie NutriscoreCategorie(int idProduit) {
+    public String NutriscoreCategorie(int idProduit) {
         Product p = iProductRepo.findById(idProduit).orElse(null);
+        System.out.println("je syuis la");
+        if (p.getCategorie().toString().equals("ProduitAlimenataire")) {
+            int a = p.getNutriscore();
+            NutriscoreCategorie category;
+            System.out.println("je syuis la 2");
 
-        int a = p.getNutriscore();
-        NutriscoreCategorie category;
-
-
-        if (a >= -15 && a <= -2) {
-            category = NutriscoreCategorie.A;
-        } else if (a >= -1 && a <= 3) {
-            category = NutriscoreCategorie.B;
-        } else if (a >= 4 && a <= 11) {
-            category = NutriscoreCategorie.C;
-        } else if (a >= 12 && a <= 16) {
-            category = NutriscoreCategorie.D;
-        } else if (a >= 17 && a <= 40) {
-            category = NutriscoreCategorie.E;
-        } else {
-            category = NutriscoreCategorie.Erroné;
+            if (a >= -15 && a <= -2) {
+                category = NutriscoreCategorie.A;
+            } else if (a >= -1 && a <= 3) {
+                category = NutriscoreCategorie.B;
+            } else if (a >= 4 && a <= 11) {
+                category = NutriscoreCategorie.C;
+            } else if (a >= 12 && a <= 16) {
+                category = NutriscoreCategorie.D;
+            } else if (a >= 17 && a <= 40) {
+                category = NutriscoreCategorie.E;
+            } else {
+                category = NutriscoreCategorie.Erroné;
+            }
+            return "product category is :" + category;
         }
 
 
-        return category;
+        return null;
     }
 
-    public List<Product> filterByPrice(Float price) {
+    public List<Product> filterByPrice(double price) {
         return this.iProductRepo.filterByPrice(price);
     }
+
 
     public List<Product> findByQuantityLessThanEqual(int quantity) {
         return this.iProductRepo.findByQuantityLessThanEqual(quantity);
@@ -101,21 +101,31 @@ public class ProductServ implements IProductServ {
             return "No products found with quantity less than or equal to 2";
         }
     }
+
     @Scheduled(cron = "0 0 0 * * *")
     public List<Product> getProductsBeforeOfExpiration() {
         List<Product> p = new ArrayList<>();
         iProductRepo.findAll().forEach(p::add);
-        List<Product> pnew=new ArrayList<>();
+        List<Product> pnew = new ArrayList<>();
         LocalDate threeDaysFromNow = LocalDate.now().plusDays(3);
-        for(int i=0;i<p.size();i++){
+        for (int i = 0; i < p.size(); i++) {
 
-            if(p.get(i).getDateExpiration().minusDays(3).isEqual(LocalDate.now())){
-                p.get(i).setPrice(p.get(i).getPrice()-p.get(i).getPrice()*0.3);
-                iProductRepo.save( p.get(i));
+            if (p.get(i).getDateExpiration().minusDays(3).isEqual(LocalDate.now())) {
+                p.get(i).setPrice(p.get(i).getPrice() - p.get(i).getPrice() * 0.3);
+                iProductRepo.save(p.get(i));
                 pnew.add(p.get(i));
             }
         }
         return pnew;
     }
 
+    public Product addAndassignProductTCatalogue(Product p, Integer idCatalogue) {
+        iProductRepo.save(p);
+        Catalogue catalogue = iCatalogueRepo.findById(idCatalogue).get();
+        Set<Product> productList = new HashSet<>();
+        productList.add(p);
+        catalogue.setProducts(productList);
+        catalogueRepo.save(catalogue);
+        return iProductRepo.save(p);
+    }
 }

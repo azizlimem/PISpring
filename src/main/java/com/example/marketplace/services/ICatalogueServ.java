@@ -13,4 +13,5 @@ public interface ICatalogueServ extends Serializable {
     Catalogue findById(Integer id);
 
     void deleteCatalogue(Integer id);
+    public Catalogue addAndassignCatalogueToMarket(Catalogue c, Integer idMarket);
 }
