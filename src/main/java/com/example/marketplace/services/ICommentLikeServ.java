@@ -16,5 +16,5 @@ public interface ICommentLikeServ extends Serializable {
     CommentLike getOneCommentLike(Integer idC);
 
     void removeCommentLike(Integer idC);
-    public CommentLike addAndAssignCommentLikeToComment(CommentLike commentLike, Integer id);
+    public CommentLike addAndAssignCommentLikeToComment(CommentLike commentLike, Integer id,Integer User);
 }

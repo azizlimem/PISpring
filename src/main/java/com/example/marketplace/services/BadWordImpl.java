@@ -8,26 +8,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class badWordImpl {
+public class BadWordImpl {
     static Map<String, String[]> words = new HashMap<>();
 
     static int largestWordLength = 0;
     public static void loadBadWords() {
         try {
-            /*A BufferedReader is a Java class that allows you to read text from a character-input stream,
-            such as a file or a network connection, in an efficient manner. It reads a chunk of data from the
-            input stream at a time and stores it in a buffer. When you call the read() method to read from the
-            stream, it returns the data from the buffer instead of reading from the stream again*/
-        /*InputStreamReader is a class that provides a bridge between byte-oriented and character-oriented streams.
-         It reads bytes from an input stream and decodes them into characters using a specified character encoding*/
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://docs.google.com/spreadsheets/d/1hIEi2YG3ydav1E06Bzf2mQbGZ12kh2fe4ISgLg_UBuM/export?format=csv").openConnection().getInputStream()));
             String line = "";
             int counter = 0;
             // readLine() returns it as a String
             while((line = reader.readLine()) != null) {
                 counter++;
-                //content is an array
                 String[] content = null;
                 try {
                     content = line.split(",");
@@ -48,9 +40,9 @@ public class badWordImpl {
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
-
+            //    System.out.println(Arrays.toString(content));
             }
-       //     System.out.println("Loaded " + counter + " words to filter out");
+
         } catch (IOException e) {
             e.printStackTrace();
         }

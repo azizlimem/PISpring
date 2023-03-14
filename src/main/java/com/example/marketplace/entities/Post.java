@@ -1,12 +1,8 @@
 package com.example.marketplace.entities;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -36,6 +32,9 @@ public class Post {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
     Set<Comment> Comments;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     Set<User> reported;
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "post")
+    Image image;
 }

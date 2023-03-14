@@ -29,6 +29,7 @@ public class ProductServ implements IProductServ {
 
     @Override
     public Product addProduct(Product product) {
+        product.setQtySold(0);
         return iProductRepo.save(product);
     }
 
