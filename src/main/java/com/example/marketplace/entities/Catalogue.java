@@ -17,8 +17,8 @@ import java.util.Set;
 public class Catalogue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Integer id;
+    @Column(name = "idCatalogue", nullable = false)
+    private Integer idCatalogue;
 
     @Column(name = "catalogue_name")
     private String catalogueName;
@@ -26,6 +26,7 @@ public class Catalogue {
     @JsonIgnore
     @ManyToMany
     private Set<Product> products ;
+    @JsonIgnore
     @OneToOne
     Market market;
 

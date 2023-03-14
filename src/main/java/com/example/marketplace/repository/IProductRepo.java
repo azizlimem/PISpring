@@ -2,16 +2,12 @@ package com.example.marketplace.repository;
 
 import com.example.marketplace.entities.Product;
 
-import com.example.marketplace.enumerations.Statuss;
 import com.example.marketplace.enumerations.Sujetrec;
 
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.Set;
 
 import java.util.List;
 
@@ -24,7 +20,7 @@ Integer nombredereclamationdunproduit (@Param("description") Sujetrec descriptio
 
 
     @Query("SELECT p FROM Product p WHERE p.price <= :price")
-    List<Product> filterByPrice(Float price);
+    List<Product> filterByPrice(double price);
     List<Product> findByQuantityLessThanEqual(int quantity);
 }
 

@@ -1,15 +1,9 @@
 package com.example.marketplace.contollers;
 
-import com.example.marketplace.entities.Comment;
 import com.example.marketplace.entities.Product;
-import com.example.marketplace.entities.Rating;
-import com.example.marketplace.enumerations.NutriscoreCategorie;
-import com.example.marketplace.services.ICommentServ;
 import com.example.marketplace.services.IProductServ;
-import com.example.marketplace.services.ProductServ;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,11 +41,11 @@ public class ProductController {
         iProductServ.deleteProduct(id);
     }
     @GetMapping("/testt/{p}")
-    NutriscoreCategorie GetScore(@PathVariable("p")int p) {
+    String GetScore(@PathVariable("p")int p) {
         return iProductServ.NutriscoreCategorie(p);
     }
-    @GetMapping("/FiltrePrix/{px}")
-    List<Product> FiltrePrix(@PathVariable("px")Float px){
+    @GetMapping("/FiltrePrix/{Price}")
+    List<Product> FiltrePrix(@Param("price") Double px){
         return iProductServ.filterByPrice(px);
     }
 
@@ -62,6 +56,10 @@ public class ProductController {
     @GetMapping("/remise")
     public List<Product> getProductsBefore3DaysOfExpiration() {
         return iProductServ.getProductsBeforeOfExpiration();
+    }
+    @PutMapping("/addAndassignProductToCataloque/{idCataloque}")
+    Product addAndassignProductTCatalogue(@RequestBody Product P,@PathVariable("idCataloque") Integer idCatalogue){
+        return iProductServ.addAndassignProductTCatalogue(P,idCatalogue);
     }
 
 
