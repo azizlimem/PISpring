@@ -1,12 +1,10 @@
 package com.example.marketplace.repository;
 
 import com.example.marketplace.entities.Post;
-import com.example.marketplace.enumerations.React;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import com.example.marketplace.entities.*;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -32,5 +30,9 @@ public interface IPostRepo extends CrudRepository<Post,Integer> {
 
     @Query("select count (uc) from User u inner join u.comments uc where u.id = :id")
     public int mostUserComment(@Param("id")Integer id);
+
+    @Query("select pl.react,count (pl.react)  from PostLike pl group by pl.react order by count (pl.react)DESC")
+    public List<String> React();
 }
+
 

@@ -1,16 +1,16 @@
 package com.example.marketplace.contollers;
 
+import com.example.marketplace.Playload.Response.MessageResponse;
 import com.example.marketplace.entities.*;
-import com.example.marketplace.services.ICommentLikeServ;
-import com.example.marketplace.services.ICommentServ;
-import com.example.marketplace.services.IPostLikeServ;
-import com.example.marketplace.services.IPostServ;
+import com.example.marketplace.repository.IUserRepository;
+import com.example.marketplace.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -21,6 +21,8 @@ public class ForumController {
     final ICommentLikeServ iCommentLikeServ;
     final IPostServ iPostServ;
     final IPostLikeServ iPostLikeServ;
+    final IimageSer iimageSer;
+    final IUserRepository userRepository;
 
     ////////////////////////////post///////////////////
     @GetMapping("/allPost")
@@ -28,20 +30,21 @@ public class ForumController {
         return iPostServ.getAllPost();
     }
 
-    @PostMapping("/addPost")
-    Post addPost(@RequestBody Post c) {
-        return iPostServ.addPost(c);
-    }
+//    @PostMapping("/addPost")
+//    Post addPost(@RequestBody Post c) {
+//        return iPostServ.addPost(c);
+//    }
+
 
     @PutMapping("/updatePost")
     Post updatePost(@RequestBody Post c) {
         return iPostServ.updatePost(c);
     }
 
-    @GetMapping("/getPost/{id}")
-    Post getPost(@PathVariable("id") Integer id) {
-        return iPostServ.getPost(id);
-    }
+//    @GetMapping("/getPost/{id}")
+//    Post getPost(@PathVariable("id") Integer id) {
+//        return iPostServ.getPost(id);
+//    }
 
     @DeleteMapping("/deletePost/{id}")
     void deletePost(@PathVariable("id") Integer id) {
@@ -54,25 +57,25 @@ public class ForumController {
         return iPostLikeServ.getAllPostLike();
     }
 
-    @PostMapping("/addPostLike")
-    PostLike addPostLike(@RequestBody PostLike c) {
-        return iPostLikeServ.addPostLike(c);
-    }
+//    @PostMapping("/addPostLike")
+//    PostLike addPostLike(@RequestBody PostLike c) {
+//        return iPostLikeServ.addPostLike(c);
+//    }
 
     @PutMapping("/updatePostLike")
     PostLike updatePostLike(@RequestBody PostLike c) {
         return iPostLikeServ.updatePostLike(c);
     }
 
-    @GetMapping("/getPostLike/{id}")
-    PostLike getPostLike(@PathVariable("id") Integer id) {
-        return iPostLikeServ.getPostLike(id);
-    }
+//    @GetMapping("/getPostLike/{id}")
+//    PostLike getPostLike(@PathVariable("id") Integer id) {
+//        return iPostLikeServ.getPostLike(id);
+//    }
 
-    @DeleteMapping("/deletePostLike/{id}")
-    void deletePostLike(@PathVariable("id") Integer id) {
-        iPostLikeServ.removePostLike(id);
-    }
+//    @DeleteMapping("/deletePostLike/{id}")
+//    void deletePostLike(@PathVariable("id") Integer id) {
+//        iPostLikeServ.removePostLike(id);
+//    }
 
     /////////////////////////Comment/////////////////////////
     @GetMapping("/allComment")
@@ -80,20 +83,20 @@ public class ForumController {
         return iCommentServ.getAllComment();
     }
 
-    @PostMapping("/addComment")
-    Comment addComment(@RequestBody Comment c) {
-        return iCommentServ.addComment(c);
-    }
+//    @PostMapping("/addComment")
+//    Comment addComment(@RequestBody Comment c) {
+//        return iCommentServ.addComment(c);
+//    }
 
     @PutMapping("/updateComment")
     Comment updateComment(@RequestBody Comment c) {
         return iCommentServ.updateComment(c);
     }
 
-    @GetMapping("/getComment/{id}")
-    Comment getComment(@PathVariable("id") Integer id) {
-        return iCommentServ.getOneComment(id);
-    }
+//    @GetMapping("/getComment/{id}")
+//    Comment getComment(@PathVariable("id") Integer id) {
+//        return iCommentServ.getOneComment(id);
+//    }
 
     @DeleteMapping("/deleteComment/{id}")
     void deleteComment(@PathVariable("id") Integer id) {
@@ -106,48 +109,82 @@ public class ForumController {
         return iCommentLikeServ.getAllCommentLike();
     }
 
-    @PostMapping("/addCommentLike")
-    CommentLike addCommentLike(@RequestBody CommentLike c) {
-        return iCommentLikeServ.addCommentLike(c);
-    }
-    @PostMapping("/addImageToPost/{idpost}")
-    @ResponseBody
-    public ResponseEntity<?> addpostimage(@RequestParam MultipartFile image, @PathVariable("idpost") Integer idpost) throws IOException {
-        return iPostServ.addimagepost(image,idpost);
-
-    }
-    @PutMapping("/updateCommentLike")
-    CommentLike updateCommentLike(@RequestBody CommentLike c) {
-        return iCommentLikeServ.updateCommentLike(c);
-    }
-
-    @GetMapping("/getCommentLike/{id}")
-    CommentLike getCommentLike(@PathVariable("id") Integer id) {
-        return iCommentLikeServ.getOneCommentLike(id);
-    }
-
-    @DeleteMapping("/deleteCommentLike/{id}")
-    void deleteCommentLike(@PathVariable("id") Integer id) {
-        iCommentLikeServ.removeCommentLike(id);
-    }
+//    @PostMapping("/addCommentLike")
+//    CommentLike addCommentLike(@RequestBody CommentLike c) {
+//        return iCommentLikeServ.addCommentLike(c);
+//    }
+//
+//    @PutMapping("/updateCommentLike")
+//    CommentLike updateCommentLike(@RequestBody CommentLike c) {
+//        return iCommentLikeServ.updateCommentLike(c);
+//    }
+//
+//    @GetMapping("/getCommentLike/{id}")
+//    CommentLike getCommentLike(@PathVariable("id") Integer id) {
+//        return iCommentLikeServ.getOneCommentLike(id);
+//    }
+//
+//    @DeleteMapping("/deleteCommentLike/{id}")
+//    void deleteCommentLike(@PathVariable("id") Integer id) {
+//        iCommentLikeServ.removeCommentLike(id);
+//    }
 
     ///////////////////////////Affecter///////////////////////////////
-    @PutMapping("/addAndAssignPostLiketoPostAndUser/{idPost}/{idUser}")
-    public PostLike addAndAssignPostLiketoPostAndUser(@RequestBody PostLike postLike, @PathVariable("idPost") Integer IdPost, @PathVariable("idUser") Integer idU) {
-        return iPostLikeServ.addAndAssignPostLikeToPostAndUser(postLike,IdPost,idU);
+    @PutMapping("/addAndAssignPostLiketoPostAndUser/{idPost}")
+    public ResponseEntity<?> addAndAssignPostLiketoPostAndUser(@RequestBody PostLike postLike, @PathVariable("idPost") Integer IdPost,Principal principal)  {
+        try {
+            String username = principal.getName();
+            User u = userRepository.findByUsername(username).orElse(null);
+            Integer id = u.getId();
+            iPostLikeServ.addAndAssignPostLikeToPostAndUser(postLike, IdPost, id);
+            return ResponseEntity.ok(new MessageResponse("React is added successfully!"));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(new MessageResponse("Erreur"));
+        }
+
     }
 
-    @PutMapping("/AssignCommentLiketoComment/{idComment}")
-    public CommentLike addAndAssignCommentLiketoComment(@RequestBody CommentLike commentLike, @PathVariable("idComment") Integer idComment) {
-        return iCommentLikeServ.addAndAssignCommentLikeToComment(commentLike, idComment);
+    @PutMapping("/AssignCommentLiketoCommentand/{idComment}")
+    public ResponseEntity<?> addAndAssignCommentLiketoComment(@RequestBody CommentLike commentLike, @PathVariable("idComment") Integer idComment,Principal principal) {
+        try {
+
+            String username = principal.getName();
+            User u = userRepository.findByUsername(username).orElse(null);
+            Integer id = u.getId();
+            iCommentLikeServ.addAndAssignCommentLikeToComment(commentLike, idComment,id);
+            return ResponseEntity.ok(new MessageResponse("React is added successfully!"));
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(new MessageResponse("Erreur"));
+        }
+
     }
     @PutMapping("/addAndAssignCommenttoPostAndUser/{idPost}/{idUser}")
-    public Comment addAndAssignCommenttoPostAndUser(@RequestBody Comment comment, @PathVariable("idPost") Integer IdPost, @PathVariable("idUser") Integer IdUser) {
-        return iCommentServ.addAndAssignCommentToPostUser(comment, IdPost,IdUser);
+    public ResponseEntity<?> addAndAssignCommenttoPostAndUser(@RequestBody Comment comment, @PathVariable("idPost") Integer IdPost,Principal principal){
+     try{
+
+
+        String username = principal.getName();
+        User u = userRepository.findByUsername(username).orElse(null);
+        Integer id = u.getId();
+        iCommentServ.addAndAssignCommentToPostUser(comment, IdPost,id);
+        return ResponseEntity.ok(new MessageResponse("React is added successfully!"));
+    }catch (Exception e){
+        return ResponseEntity.badRequest().body(new MessageResponse("Erreur"));
     }
-    @PutMapping("/addAndAssignPostToUser/{idPost}/{idUser}")
-    public Post addAndAssignPostToUser(@RequestBody Post post,@PathVariable("idUser") Integer idUser) {
-        return iPostServ.addAndAssignPostToPostUser(post,idUser);
+    }
+
+    @PutMapping("/addAndAssignPostToUser")
+    public ResponseEntity<?> addAndAssignPostToUser(@RequestBody Post post,Principal principal) {
+        try {
+            String username = principal.getName();
+            User u = userRepository.findByUsername(username).orElse(null);
+            Integer id = u.getId();
+
+            return ResponseEntity.ok(new MessageResponse(iPostServ.addAndAssignPostToPostUser(post, id)));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Please Signin or Signup"));
+        }
+
     }
     ////////////////////////////QUERY/////////////////////////////////////
     @GetMapping("/getAllCommentOfPost/{id}")
@@ -162,16 +199,23 @@ public class ForumController {
     public int nbCommentLike(@PathVariable("id") Integer id) {
         return iCommentServ.nbCommentLike(id);
     }
-    @PutMapping("/SignalerPost/{idP}/{idU}")
-    public void SignalerPost(@PathVariable("idP") Integer idP,@PathVariable("idU") Integer idU) {
-         iPostServ.affecterSignal(idP,idU);
+    @PutMapping("/SignalerPost/{idP}")
+    public ResponseEntity<?> SignalerPost(@PathVariable("idP") Integer idP,Principal principal) {
+        try {
+            String username = principal.getName();
+            User u = userRepository.findByUsername(username).orElse(null);
+            Integer id = u.getId();
+            iPostServ.affecterSignal(idP,id);
+            return ResponseEntity.ok(new MessageResponse("signal is added successfully!"));
+        }catch ( Exception e){
+
+            return ResponseEntity.badRequest().body(new MessageResponse("Erreur"));
+        }
     }
     @GetMapping("/NbSignale/{id}")
-    public int NBtest(@PathVariable("id") Integer id) {
+    public int NBSignale(@PathVariable("id") Integer id) {
         return iPostServ.NbSignale(id);
     }
-
-
 
     @GetMapping("/bestPost")
     public Post bestPost() {
@@ -181,4 +225,26 @@ public class ForumController {
     public String Statistique() {
         return iPostServ.Statistique();
     }
+
+    @GetMapping("/Sugg/{id}")
+    public String[] SuggForPost(@PathVariable("id") Integer id) {
+        return iCommentServ.CommentaireSuggestion(id);
+    }
+
+    @PutMapping("/addImageAndAssigToPost/{idPost}")
+    public ResponseEntity<?> addAndAssignPostToUser(@RequestBody MultipartFile image,@PathVariable("idPost") Integer idP) throws IOException {
+        try{iimageSer.AddandAssig(image,idP);
+        return ResponseEntity.ok(new MessageResponse("image is added successfully!"));
+    }catch ( Exception e){
+        return ResponseEntity.badRequest().body(new MessageResponse("Erreur"));
+    }
+    }
+    @GetMapping("/getALLImage")
+    public List<Image> list() {
+        return iimageSer.list();
+    }
+
+
+
+
 }
