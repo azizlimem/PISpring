@@ -1,6 +1,5 @@
 package com.example.marketplace.services;
 
-import com.example.marketplace.entities.Comment;
 import com.example.marketplace.entities.PostLike;
 
 import java.io.Serializable;
@@ -17,6 +16,6 @@ public interface IPostLikeServ extends Serializable {
 
     void removePostLike(Integer idC);
 
-    public PostLike addAndAssignPostLikeToPostAndUser(PostLike postLike, Integer idP,Integer idU);
+    public String addAndAssignPostLikeToPostAndUser(PostLike postLike, Integer idP, Integer idU);
 
 }
