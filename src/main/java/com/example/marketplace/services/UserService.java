@@ -98,7 +98,7 @@ public class UserService  implements IUserServices {
             String code = randomString.randomGeneratedString(8);
             u.setCode(code);
             userRepository.save(u);
-            mailerService.sendEmail(email, "Account Recovery", "Please use this code : " + code + "to recover your account !  ");
+            mailerService.sendEmail(email, "Account Recovery", "Please use this code :  " + code + "  to recover your account !  ");
             return "Recovery Code sent successfully to your Email ! ";
         }
 

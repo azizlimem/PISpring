@@ -13,7 +13,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 @Service
 public class CloudinaryService {
-    Cloudinary cloudinary;
+    final Cloudinary cloudinary;
 
     private Map<String, String> valuesMap = new HashMap<>();
 

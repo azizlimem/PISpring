@@ -29,6 +29,9 @@ public class Product {
 
     private LocalDate dateExpiration;
 
+    @JsonIgnore
+    private Integer QtySold;
+
     private String name;
     private Integer Nutriscore;
 
@@ -36,7 +39,7 @@ public class Product {
     private Categorie categorie;
 
     @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "products")
     private Set<Catalogue> catalogues ;
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")

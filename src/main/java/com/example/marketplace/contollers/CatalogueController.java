@@ -38,6 +38,9 @@ public class CatalogueController {
     void deleteCatalogue(@PathVariable("id") Integer id) {
         iCatalogueServ.deleteCatalogue(id);
     }
-
+    @PutMapping("/addAndassignCataloqueToMarket/{idMarket}")
+    Catalogue addAndassignCataloqueToMarket(@RequestBody Catalogue C,@PathVariable("idMarket") Integer idMarket){
+        return iCatalogueServ.addAndassignCatalogueToMarket(C,idMarket);
+    }
 
 }

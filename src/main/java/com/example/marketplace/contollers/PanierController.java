@@ -39,8 +39,8 @@ public class PanierController {
 
         panierServices.removePanier(id);
     }
-    @GetMapping("/testttayoub")
-    void testttttttttt(){
+    @DeleteMapping("/testRemove")
+    public void testRemove() {
         panierServices.romoveListPanier();
     }
 

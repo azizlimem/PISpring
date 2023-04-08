@@ -44,8 +44,9 @@ public class RatingController {
     Rating addAndassignRatingToProductAndUser(@RequestBody Rating r,@PathVariable("idProd") Integer idProd,@PathVariable("idUser") Integer idUser){
         return iRatingServ.addAndassignRatingToProductAndUser(r,idProd,idUser);
     }
-    @GetMapping("RatingCalcul/{id}")
+    @GetMapping("RatingCalcul/{idProduit}")
     public float RatingCalcul(@PathVariable("id") Integer id){
         return iRatingServ.RatingCalcul(id);
     }
 }
+

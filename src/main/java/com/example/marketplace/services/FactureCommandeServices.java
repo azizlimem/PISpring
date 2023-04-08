@@ -57,7 +57,7 @@ public class FactureCommandeServices implements IFactureCommandeServices {
         for (LigneCommande ligneCommande : panier.getLigneCommandes()) {
             if(panier.getPrixTotal()>=200){
                 p+=ligneCommande.getPaniers().getPrixTotal()*ligneCommande.getPaniers().getRemise();
-                total+=(ligneCommande.getPaniers().getPrixTotal()-p)*ligneCommande.getQuantiteProduit();
+                total+=((ligneCommande.getPaniers().getPrixTotal()-p)*ligneCommande.getQuantiteProduit())- panier.getBonus();
 
 
             }

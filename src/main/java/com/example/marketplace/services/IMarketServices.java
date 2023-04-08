@@ -14,4 +14,5 @@ public interface IMarketServices {
     Market retrieveMarket(Integer idMarket);
 
     void removeMarket(Integer idMarket);
+    String addAndAsignToUser(Market market , Integer idUser);
 }
