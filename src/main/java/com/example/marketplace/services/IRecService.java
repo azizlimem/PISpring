@@ -10,8 +10,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IRecService {
-    Reclamation ajouterreclamation(Reclamation r,Integer id );
-
+    Reclamation ajouterreclamation(Reclamation r );
+    void  affecetruserlreclamation (Long idrec,Integer iduser);
     void deleteByIdrec(Long id);
 
     List<Reclamation> listedesreclamations();

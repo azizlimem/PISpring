@@ -61,6 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests().antMatchers( "/swagger-ui/index.html").permitAll()
+<<<<<<< HEAD
+            .antMatchers("/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","http://localhost:8188/SpringMVC/auth/verification").permitAll()
+=======
 
             .antMatchers("/auth/signup","/auth/signin","/auth/verification","/auth/forgotPassword","/auth/resetPassword","http://localhost:8188/SpringMVC/auth/signin","**","http://localhost:8188/SpringMVC/auth/verification").permitAll()
 
@@ -73,6 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
+>>>>>>> 90e78cb4040aad12163a69b55a195e389db5fe88
             .antMatchers("/v2/api-docs", "/v3/api-docs", "/configuration/**","/swagger**/**", "/webjars/**").permitAll()
             .antMatchers("/test/**").permitAll()
             .anyRequest().authenticated();
