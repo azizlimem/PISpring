@@ -50,12 +50,10 @@ public class inter {
     }
 
     @PostMapping("/addreclamation")
-    public Reclamation addreclamation(@RequestBody Reclamation i , Principal principal) {
-        String username = principal.getName();
-        User u = userRepository.findByUsername(username).orElse(null);
-                Integer id=u.getId();
+    public Reclamation addreclamation(@RequestBody Reclamation i ) {
 
-        return recserv.ajouterreclamation(i,id);    }
+
+        return recserv.ajouterreclamation(i);    }
     @DeleteMapping("/reclamationsupprimer/{id}")
     public  void deleterec(@PathVariable("id") Long id ){
         recserv.deleteByIdrec(id);
@@ -104,6 +102,11 @@ public class inter {
     @GetMapping("/nbrdemotsdanspriorite/{idrec}")
     public String nbrdemotsdanspriorite(@PathVariable Long idrec){
         return recserv.compteurdenrbdemots(idrec);
+
+    }
+    @GetMapping("/affetcteruserrec/{idrec}/{iduser}")
+    public void nbrdemotsdanspriorite(@PathVariable Long idrec,@PathVariable Integer iduser){
+         recserv.affecetruserlreclamation(idrec,iduser);
 
     }
     @GetMapping("/nombredereclamationsproduit/{description}/{id}")

@@ -45,9 +45,8 @@ public class RecService implements  IRecService {
     ILigneCommandeRepo lgrepo;
     @Autowired IUserRepository userRepository;
     @Override
-    public Reclamation ajouterreclamation(Reclamation i,Integer id ) {
-        User u=userRepository.findById(id).orElse(null);
-        i.setUserrr(u);
+    public Reclamation ajouterreclamation(Reclamation i ) {
+
         return recrepo.save(i);
     }
 
@@ -123,7 +122,7 @@ public class RecService implements  IRecService {
         Livreur amalfares = livrepo.findById(idlivreur).orElse(null);
         if (countReclamation(idlivreur) == 1) {
             salaire = calculatePercentage(amalfares.getSalaire(), 90);
-        } else if (countReclamation(idlivreur) == 3) {
+        } else if (countReclamation(idlivreur) >3) {
             salaire = calculatePercentage(amalfares.getSalaire(), 80);
         }//else {
         //desactiveruser(amalfares);
@@ -186,7 +185,7 @@ public class RecService implements  IRecService {
     public  void prixproduit (Sujetrec description,Integer idprodrec) {
         Product produitrec = prodrepo.findById(idprodrec).orElse(null);
 
-            if (nombredereclamationdunproduit(description,idprodrec)==3 ) {
+            if (nombredereclamationdunproduit(description,idprodrec)>3) {
                 produitrec.setPrice(calculatePercentage(produitrec.getPrice(),95));
                 produitrec.setCategorie(Categorie.Cosmetique);
                 prodrepo.save(produitrec);
@@ -442,6 +441,13 @@ public class RecService implements  IRecService {
         Reclamation rec=recrepo.findById(idrec).orElse(null);
         LigneCommande lgcmd=lgrepo.findById(idligcmd).orElse(null);
         rec.setLgcommande(lgcmd);
+        recrepo.save(rec);
+    }
+    @Override
+    public void  affecetruserlreclamation (Long idrec,Integer iduser){
+        Reclamation rec=recrepo.findById(idrec).orElse(null);
+        User user=userRepository.findById(iduser).orElse(null);
+        rec.setUserrr(user);
         recrepo.save(rec);
     }
 
