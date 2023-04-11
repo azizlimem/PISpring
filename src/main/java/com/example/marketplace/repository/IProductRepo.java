@@ -24,7 +24,7 @@ Integer nombredereclamationdunproduit (@Param("description") Sujetrec descriptio
 
 
     @Query("SELECT p FROM Product p WHERE p.price <= :price")
-    List<Product> filterByPrice(Float price);
+    List<Product> filterByPrice(Double price);
     List<Product> findByQuantityLessThanEqual(int quantity);
 }
 

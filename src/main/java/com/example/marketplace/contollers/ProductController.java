@@ -51,7 +51,7 @@ public class ProductController {
         return iProductServ.NutriscoreCategorie(p);
     }
     @GetMapping("/FiltrePrix/{px}")
-    List<Product> FiltrePrix(@PathVariable("px")Float px){
+    List<Product> FiltrePrix(@PathVariable("px")Double px){
         return iProductServ.filterByPrice(px);
     }
 

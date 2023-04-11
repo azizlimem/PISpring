@@ -85,7 +85,7 @@ public class ProductServ implements IProductServ {
         return category;
     }
 
-    public List<Product> filterByPrice(Float price) {
+    public List<Product> filterByPrice(Double price) {
         return this.iProductRepo.filterByPrice(price);
     }
 

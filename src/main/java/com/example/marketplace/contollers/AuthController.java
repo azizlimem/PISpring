@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
   final AuthenticationManager authenticationManager;
@@ -63,20 +64,23 @@ public class AuthController {
         User u = userRepository.findByUsername(loginRequest.getUsername()).get();
 
             if (u.getStatus()) {
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                String jwt = jwtUtils.generateJwtToken(authentication);
+                if(u.getBanTime() == null) {
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    String jwt = jwtUtils.generateJwtToken(authentication);
 
 
-                UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-                List<String> roles = userDetails.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList());
+                    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+                    List<String> roles = userDetails.getAuthorities().stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .collect(Collectors.toList());
 
-                return ResponseEntity.ok(new JwtResponse(jwt,
-                        userDetails.getId(),
-                        userDetails.getUsername(),
-                        userDetails.getEmail(),
-                        roles));
+                    return ResponseEntity.ok(new JwtResponse(jwt,
+                            userDetails.getId(),
+                            userDetails.getUsername(),
+                            userDetails.getEmail(),
+                            roles));
+                }
+                else return new ResponseEntity("Account Banned ! ", HttpStatus.BAD_REQUEST);
             } else return new ResponseEntity("Account Non verified ! Please Proceed to Verification Or your Account will be deleted Automatically", HttpStatus.BAD_REQUEST);
 
     }
@@ -110,7 +114,7 @@ public class AuthController {
         mailerService.sendEmail(user.getEmail(),"Account Creation"," Hello "+user.getFirstName()+" "+user.getLastName()+"\n Your account is almost created, please Login and write this code in the right field to complete your inscription !\n Your code is :"+ code);
     user.setStatus(false);
 
-        Set<String> strRoles = signUpRequest.getRoles();
+        List<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.ROLE_CLIENT)

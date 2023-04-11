@@ -22,7 +22,7 @@ public interface IUserRepository extends CrudRepository<User,Integer>, JpaReposi
     User findByCode(String code);
     Optional<User> findByUsername(String username);
 
-  List<User> findByStatusIsNullAndCreatedAtIsBefore( LocalDateTime b);
+  List<User> findByStatusFalseAndCreatedAtIsBefore(LocalDateTime b);
 
     Boolean existsByUsername(String username);
 
