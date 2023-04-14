@@ -38,6 +38,7 @@ public class ContractService implements IContractServices {
         c.setDateFinContract(d.plusMonths(c.getNbrMonths()));
         c.setPackType(PackType.BRONZE);
         c.setPaid(false);
+        c.setDiscount(0);
         Integer priceMonth = 500;
         if (c.getNbrMonths()<6) {
             c.setPrice(c.getNbrMonths() * priceMonth);
@@ -71,6 +72,7 @@ public class ContractService implements IContractServices {
                 c.setNbrMonths(nbrMonths);
                 c.setDateDebutContract(d);
                 c.setDateFinContract(d.plusMonths(nbrMonths));
+                c.setDiscount(0);
                 contractRepository.save(c);
                 return "Contract Updated Successfully ! ";
             } else return "Please Finalise Paying Your Previous Contract So You Can Renew it ! ";
@@ -85,5 +87,7 @@ public class ContractService implements IContractServices {
     public void removeContract(Integer idContract) {
         contractRepository.deleteById(idContract);
     }
+
+
 
 }

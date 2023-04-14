@@ -81,7 +81,7 @@ public class UserService  implements IUserServices {
     public void DeleteNonVerifiedAccounts(){
         LocalDateTime d = LocalDateTime.now().minusHours(24);
         List<User> list = new ArrayList<>();
-        userRepository.findByStatusIsNullAndCreatedAtIsBefore(d).forEach(list::add);
+        userRepository.findByStatusFalseAndCreatedAtIsBefore(d).forEach(list::add);
         for (User u : list){
            System.out.println(u.getFirstName());
             userRepository.deleteById(u.getId());
@@ -117,6 +117,20 @@ public String resetPassword(String verifCode,String newPass){
     return "Your password is Changed Successfully ! Please Proceed to Logging In " ;
 
 }
+
+//@Scheduled(cron="*/10 * * * * *")
+    public void activateBannedAccounts(){
+        LocalDateTime d = LocalDateTime.now();
+        List<User> list = new ArrayList<>();
+        userRepository.findAll().forEach(list::add);
+        for (User u : list){
+            if(d.isAfter(u.getBanTime())){
+                u.setBanTime(null);
+                userRepository.save(u);
+            }
+        }
+
+    }
 
 
 

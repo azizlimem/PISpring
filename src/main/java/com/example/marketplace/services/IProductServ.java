@@ -14,8 +14,10 @@ public interface IProductServ extends Serializable {
     Product findById(Integer id);
 
     void deleteProduct(Integer id);
-    public String NutriscoreCategorie(int idProduit);
-    public List<Product> filterByPrice(double price);
+
+    public NutriscoreCategorie NutriscoreCategorie(int idProduit);
+    public List<Product> filterByPrice(Double price);
+
     public String showAlert();
     public List<Product> getProductsBeforeOfExpiration();
     public Product addAndassignProductTCatalogue(Product p, Integer idCatalogue);

@@ -44,8 +44,10 @@ public class ProductController {
     String GetScore(@PathVariable("p")int p) {
         return iProductServ.NutriscoreCategorie(p);
     }
-    @GetMapping("/FiltrePrix/{Price}")
-    List<Product> FiltrePrix(@Param("price") Double px){
+
+    @GetMapping("/FiltrePrix/{px}")
+    List<Product> FiltrePrix(@PathVariable("px")Double px){
+
         return iProductServ.filterByPrice(px);
     }
 

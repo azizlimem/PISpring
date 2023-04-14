@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -29,6 +30,6 @@ public class Market implements Serializable {
     @OneToOne
     private User user;
     @JsonIgnore
-    @OneToOne(mappedBy = "market")
-    Catalogue catalogue;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="market",fetch = FetchType.EAGER)
+    private Set<Product> product;
 }

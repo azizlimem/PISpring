@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -19,14 +20,14 @@ public class SignupRequest {
 
     private String email;
 
-    private Set<String> roles;
-
+    private List<String> roles;
 
     private String password;
 
     private String cinUser;
 
     private   String phoneNumber;
+
 
 
 }

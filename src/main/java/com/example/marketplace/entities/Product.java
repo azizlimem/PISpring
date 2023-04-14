@@ -39,8 +39,8 @@ public class Product {
     private Categorie categorie;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "products")
-    private Set<Catalogue> catalogues ;
+    @ManyToOne
+    Market market;
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
     private Set<LigneCommande>  ligneCommandes  ;
