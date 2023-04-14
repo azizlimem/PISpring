@@ -136,8 +136,8 @@ public class ForumController {
             String username = principal.getName();
             User u = userRepository.findByUsername(username).orElse(null);
             Integer id = u.getId();
-            iPostLikeServ.addAndAssignPostLikeToPostAndUser(postLike, IdPost, id);
-            return ResponseEntity.ok(new MessageResponse("React is added successfully!"));
+
+            return ResponseEntity.ok(new MessageResponse(iPostLikeServ.addAndAssignPostLikeToPostAndUser(postLike, IdPost, id)));
         }catch (Exception e){
             return ResponseEntity.badRequest().body(new MessageResponse("Erreur"));
         }
@@ -179,12 +179,10 @@ public class ForumController {
             String username = principal.getName();
             User u = userRepository.findByUsername(username).orElse(null);
             Integer id = u.getId();
-
             return ResponseEntity.ok(new MessageResponse(iPostServ.addAndAssignPostToPostUser(post, id)));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new MessageResponse("Please Signin or Signup"));
         }
-
     }
     ////////////////////////////QUERY/////////////////////////////////////
     @GetMapping("/getAllCommentOfPost/{id}")
@@ -208,7 +206,6 @@ public class ForumController {
             iPostServ.affecterSignal(idP,id);
             return ResponseEntity.ok(new MessageResponse("signal is added successfully!"));
         }catch ( Exception e){
-
             return ResponseEntity.badRequest().body(new MessageResponse("Erreur"));
         }
     }

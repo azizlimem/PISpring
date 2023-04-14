@@ -10,8 +10,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IRecService {
-    Reclamation ajouterreclamation(Reclamation r);
-
+    Reclamation ajouterreclamation(Reclamation r );
+    void  affecetruserlreclamation (Long idrec,Integer iduser);
     void deleteByIdrec(Long id);
 
     List<Reclamation> listedesreclamations();
@@ -31,4 +31,7 @@ public interface IRecService {
     List<List<String>> readExcel(String filePath) throws IOException;
     String retournescoredesatisfactionclient (String filepath, String filepathneutre,String filepathnegatifs)throws IOException ;
     String lemeilleureemployedeumois();
+    void  affecterinterventionareclamation(Long idinterv,Long idrec);
+    void  affecterlignecommandereclamation (Integer idligcmd,Long idrec);
+
 }

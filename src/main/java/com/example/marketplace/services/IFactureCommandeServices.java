@@ -7,10 +7,6 @@ public interface IFactureCommandeServices {
     FactureCommande retrieveFactureCommande(Integer id);
 
     FactureCommande updateFactureCommande(FactureCommande factureCommande);
-
-
-    // FactureCommande addFactureCommande(FactureCommande factureCommande);
-
     FactureCommande addFactureCommande(FactureCommande factureCommande, Integer IdCommande, Panier panier);
 
     float calculePrixTotal(Panier panier);

@@ -148,13 +148,14 @@ public class PostServ implements IPostServ {
         }
         return x;
     }
-  //  @Scheduled(cron = "*/10 * * * * *")
+   @Scheduled(cron = "*/10 * * * * *")
     @Override
     public String ArchiverAutomatique() {
         for (Post post : iPostRepo.findAll()) {
             if (post.getReported().size() > 0) {
                 post.setArchiver(true);
                 iPostRepo.save(post);
+                mailerService.sendEmail(post.getUser().getEmail(), "Post archived", "Hello " +post.getUser().getFirstName() + " " + post.getUser().getLastName() +" Your Post  "+post.getTitle()+" is archived");
                 return post.getUser().getFirstName()+" your post is archived";
             }
         }

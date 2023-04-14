@@ -41,8 +41,12 @@ public class RecService implements  IRecService {
     InterventionServ interserv;
     @Autowired
     UserService userserv;
+    @Autowired
+    ILigneCommandeRepo lgrepo;
+    @Autowired IUserRepository userRepository;
     @Override
-    public Reclamation ajouterreclamation(Reclamation i) {
+    public Reclamation ajouterreclamation(Reclamation i ) {
+
         return recrepo.save(i);
     }
 
@@ -118,7 +122,7 @@ public class RecService implements  IRecService {
         Livreur amalfares = livrepo.findById(idlivreur).orElse(null);
         if (countReclamation(idlivreur) == 1) {
             salaire = calculatePercentage(amalfares.getSalaire(), 90);
-        } else if (countReclamation(idlivreur) == 3) {
+        } else if (countReclamation(idlivreur) >3) {
             salaire = calculatePercentage(amalfares.getSalaire(), 80);
         }//else {
         //desactiveruser(amalfares);
@@ -181,7 +185,7 @@ public class RecService implements  IRecService {
     public  void prixproduit (Sujetrec description,Integer idprodrec) {
         Product produitrec = prodrepo.findById(idprodrec).orElse(null);
 
-            if (nombredereclamationdunproduit(description,idprodrec)==3 ) {
+            if (nombredereclamationdunproduit(description,idprodrec)>3) {
                 produitrec.setPrice(calculatePercentage(produitrec.getPrice(),95));
                 produitrec.setCategorie(Categorie.Cosmetique);
                 prodrepo.save(produitrec);
@@ -192,23 +196,24 @@ public class RecService implements  IRecService {
     public List<List<String>> readExcel(String filePath) throws IOException {
 
         List<List<String>> excelData = new ArrayList<>();
-
+// rée un nouvel objet FileInputStream qui va être utilisé pour lire
+// les données du fichier Excel spécifié par son chemin d'accès (filePath).
         FileInputStream inputStream = new FileInputStream(filePath);
-
+// elle creer un objet workbook pour les fichiers excel pour stocker les informations de excel
         Workbook workbook = new XSSFWorkbook(inputStream);
-
+//parcourt toutes les feuilles d'excel
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-
+//recupere chaque feuille
             Sheet sheet = workbook.getSheetAt(i);
-
+// la méthode boucle à travers chaque ligne de la feuille à l'aide d'un objet Iterator<Row>
             Iterator<Row> rowIterator = sheet.iterator();
-
+//tant qu il ya des lignes
             while (rowIterator.hasNext()) {
 
                 List<String> rowData = new ArrayList<>();
-
+//extrait la ligne suivante du fichier Excel en cours de lecture.
                 Row row = rowIterator.next();
-
+//le methode boucle les colonne ta ligne  et extrait les ligne
                 Iterator<Cell> cellIterator = row.iterator();
 
                 while (cellIterator.hasNext()) {
@@ -360,16 +365,16 @@ public class RecService implements  IRecService {
             String[] chaine = comment1.getText().split(" ");// recuperit un tableau contenant les mots de chaque commentaire
             for (String ch : chaine) {
                 for (List<String> unelementdelistemotspositifs : readExcel(filepath)) {
+                    for (String lachainevoulupositifs : unelementdelistemotspositifs) {
+                        if (lachainevoulupositifs.equals(ch)) {
+                            score++;}}
                     for (List<String> unelementdelistemotneutre : readExcelmotsneutres(filepathneutre)) {
+                        for (String lachainevouluneutre : unelementdelistemotneutre) {
+                            if (lachainevouluneutre.equals(ch)) {
+                                scoreneutre++;
+                            }}
                         for (List<String> unelementdelistemotnegatifs : readExcelmotsnegatifs(filepathnegatifs)) {
-                            for (String lachainevoulupositifs : unelementdelistemotspositifs) {
-                                for (String lachainevouluneutre : unelementdelistemotneutre) {
                                     for (String lachainevoulunegatifs : unelementdelistemotnegatifs) {
-                                        if (lachainevoulupositifs.equals(ch)) {
-                                            score++;
-                                            if (lachainevouluneutre.equals(ch)) {
-                                                scoreneutre++;
-                                            }
                                             if (lachainevoulunegatifs.equals(ch)) {
                                                 scorenegatifs++;
                                             }
@@ -388,9 +393,7 @@ public class RecService implements  IRecService {
                             return message.concat("le client est tres satisfait du siyte et ses services");
                         }
                     }
-                }
-            }
-        }
+
         return message;
     }
 
@@ -400,13 +403,12 @@ public class RecService implements  IRecService {
         List<User> listedesusers=userserv.retrieveAllUsers();
         List<Intervention> listeinterventions= interserv.listedesinetrventions();
         for (User user : listedesusers){
-            int nbrpoint = user.getNbrpoints();
+            int nbrpoint = 0;
             for (Intervention intervention :listeinterventions) {
                 LocalDate date = LocalDate.of(2023, 3, 1);
+                LocalDate datefindumois = LocalDate.of(2023, 3, 31);
                 LocalDate localDateDebut = new java.sql.Date(intervention.getDatedebinter().getTime()).toLocalDate();
-
-
-                if (intervention.getUserrrr().getId().equals(user.getId()) && localDateDebut.isAfter(date) && calculerDateFinIntervention(intervention.getId()).isBefore(LocalDate.now())) {
+                if (intervention.getUserrrr().getId().equals(user.getId()) && localDateDebut.isAfter(date) && calculerDateFinIntervention(intervention.getId()).isBefore(datefindumois)) {
                     nbrpoint=nbrpoint+1;
                 }
             }
@@ -414,16 +416,41 @@ public class RecService implements  IRecService {
             userrepo.save(user);
 
         }
-        for (User i : listedesusers) {
-            for (User j : listedesusers) {
-                if (i.getNbrpoints()>j.getNbrpoints()) {
-                    return message+i.getFirstName()+"estlemeilleur";
-                } else {
-                    return message+j.getFirstName()+"estlemeilleur";
-                }
+
+
+      String  messagemeilleur="";
+        int max=0;
+        for ( User user :listedesusers) {
+           int nbrpoint=user.getNbrpoints();
+               if(nbrpoint>max){
+                   max=nbrpoint;
+                   messagemeilleur=user.getFirstName()+"est le meilleur";
             }
         }
-        return message ;
+        return messagemeilleur;
+        }
+    @Override
+    public void  affecterinterventionareclamation(Long idinterv,Long idrec){
+        Intervention inter= interrepo.findById(idinterv).orElse(null);
+        Reclamation rec=recrepo.findById(idrec).orElse(null);
+        rec.setIntervention(inter);
+        recrepo.save(rec);
     }
+   @Override
+    public void  affecterlignecommandereclamation (Integer idligcmd,Long idrec){
+        Reclamation rec=recrepo.findById(idrec).orElse(null);
+        LigneCommande lgcmd=lgrepo.findById(idligcmd).orElse(null);
+        rec.setLgcommande(lgcmd);
+        recrepo.save(rec);
+    }
+    @Override
+    public void  affecetruserlreclamation (Long idrec,Integer iduser){
+        Reclamation rec=recrepo.findById(idrec).orElse(null);
+        User user=userRepository.findById(iduser).orElse(null);
+        rec.setUserrr(user);
+        recrepo.save(rec);
+    }
+
+
     }
 

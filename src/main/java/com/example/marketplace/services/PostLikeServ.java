@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,17 +51,18 @@ public class PostLikeServ implements IPostLikeServ{
 
 
     @Override
-    public PostLike addAndAssignPostLikeToPostAndUser(PostLike postLike, Integer idP,Integer idU) {
+    public String addAndAssignPostLikeToPostAndUser(PostLike postLike, Integer idP, Integer idU) {
         if (iPostLikeRepo.ReachtIs(idU,idP)==null){
             Post p=iPostRepo.findById(idP).orElse(null);
             User user=iUserRepository.findById(idU).orElse(null);
             postLike.setPost(p);
             postLike.setUser(user);
-            return iPostLikeRepo.save(postLike);
+            iPostLikeRepo.save(postLike);
+            return "React is added successfully";
         } else if((iPostLikeRepo.ReachtIs(idU,idP).toString().equals(postLike.getReact().toString()))==true){
-            System.out.println("kifkif");
+          //  System.out.println("kifkif");
            iPostLikeRepo.deleteById(iPostLikeRepo.deletePostLikeeeeBy(idU,idP));
-            return null;
+            return "React is delete successfully";
         } else if((iPostLikeRepo.ReachtIs(idU,idP).toString().equals(postLike.getReact().toString()))==false){
                 iPostLikeRepo.deleteById(iPostLikeRepo.deletePostLikeeeeBy(idU,idP));
                 Post p=iPostRepo.findById(idP).orElse(null);
@@ -70,7 +70,8 @@ public class PostLikeServ implements IPostLikeServ{
                 postLike.setPost(p);
                 postLike.setUser(user);
                 System.out.println("DISLIKE");
-                return iPostLikeRepo.save(postLike);
+                iPostLikeRepo.save(postLike);
+                return "React is changed successfully";
         }
         return null;
     }

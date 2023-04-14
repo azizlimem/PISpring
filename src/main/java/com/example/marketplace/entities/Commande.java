@@ -30,6 +30,9 @@ public class Commande {
     @JsonIgnore
     @OneToOne(mappedBy = "commande")
     Charity charity;
+    @JsonIgnore
+    @ManyToOne
+    SoldeDonnation soldeDonnation;
 
 
 }

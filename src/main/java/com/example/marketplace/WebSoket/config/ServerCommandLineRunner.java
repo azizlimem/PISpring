@@ -10,12 +10,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class ServerCommandLineRunner implements CommandLineRunner {
+public class ServerCommandLineRunner // implements CommandLineRunner
+ {
 
     private final SocketIOServer server;
 
-    @Override
+ /*   @Override
     public void run(String... args) throws Exception {
         server.start();
-    }
+    }*/
 }

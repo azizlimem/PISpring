@@ -3,14 +3,17 @@ package com.example.marketplace.contollers;
 import com.example.marketplace.entities.Intervention;
 import com.example.marketplace.entities.Product;
 import com.example.marketplace.entities.Reclamation;
+import com.example.marketplace.entities.User;
 import com.example.marketplace.enumerations.Statuss;
 import com.example.marketplace.enumerations.Sujetrec;
+import com.example.marketplace.repository.IUserRepository;
+import com.example.marketplace.services.IRecService;
 import com.example.marketplace.services.InterventionServ;
-import com.example.marketplace.services.RecService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +23,9 @@ public class inter {
     @Autowired
     InterventionServ interserv;
     @Autowired
-    RecService recserv;
+    IRecService recserv;
+    @Autowired
+    IUserRepository userRepository;
 
     @PostMapping("/addintervention")
     public Intervention addintervention(@RequestBody Intervention u ) {
@@ -45,8 +50,10 @@ public class inter {
     }
 
     @PostMapping("/addreclamation")
-    public Reclamation addreclamation(@RequestBody Reclamation u ) {
-        return recserv.ajouterreclamation(u);    }
+    public Reclamation addreclamation(@RequestBody Reclamation i ) {
+
+
+        return recserv.ajouterreclamation(i);    }
     @DeleteMapping("/reclamationsupprimer/{id}")
     public  void deleterec(@PathVariable("id") Long id ){
         recserv.deleteByIdrec(id);
@@ -60,11 +67,11 @@ public class inter {
         return  recserv.afficherproduitssimilaires(idproduitrec);
 
     }
-    @PutMapping("/updaterrecwithquery/{idrec}/{ticketstatus}")
-    public void updaterec1(@PathVariable Long idrec, @PathVariable Statuss ticketstatus) {
-        recserv.updatereclamation( idrec,ticketstatus);
+    //@PutMapping("/updaterrecwithquery/{idrec}/{ticketstatus}")
+    //public void updaterec1(@PathVariable Long idrec, @PathVariable Statuss ticketstatus) {
+     //   recserv.updatereclamation( idrec,ticketstatus);
 
-    }
+    //}
     @PutMapping("/updaterecwithrec/{idrec}")
     public Reclamation updatereccc ( @PathVariable Long idrec,@RequestBody Reclamation  i){
         return recserv.updatereclamation2(idrec,i);
@@ -78,10 +85,10 @@ public class inter {
     public double retournesalaire (@PathVariable Long iduser ){
         return   recserv.retournesalaire(iduser);
     }
-    @GetMapping("/listeproduits/{idproduitreclame}")
-    public List<Product> afficherproduitsimilaire(@PathVariable int idproduitreclame){
-        return recserv.afficherproduitssimilaires(idproduitreclame);
-    }
+    //@GetMapping("/listeproduits/{idproduitreclame}")
+    //public List<Product> afficherproduitsimilaire(@PathVariable int idproduitreclame){
+      //  return recserv.afficherproduitssimilaires(idproduitreclame);
+    //}
 
     @GetMapping("/order")
     public   List<Reclamation> order1(){
@@ -97,6 +104,11 @@ public class inter {
         return recserv.compteurdenrbdemots(idrec);
 
     }
+    @GetMapping("/affetcteruserrec/{idrec}/{iduser}")
+    public void nbrdemotsdanspriorite(@PathVariable Long idrec,@PathVariable Integer iduser){
+         recserv.affecetruserlreclamation(idrec,iduser);
+
+    }
     @GetMapping("/nombredereclamationsproduit/{description}/{id}")
     Integer nombredereclamationdunproduit(@PathVariable Sujetrec description,@PathVariable Integer id){
         return recserv.nombredereclamationdunproduit(description,id);
@@ -105,10 +117,10 @@ public class inter {
    public  void prixproduit (@PathVariable Sujetrec description,@PathVariable Integer idprodrec){
         recserv.prixproduit(  description, idprodrec);
    }
-    @GetMapping("/listemotspositifs/{filePath}")
-    public   List<List<String>> readExcellistemotspositifs(String filePath) throws IOException {
-        return recserv.readExcel(filePath);
-    }
+    //@GetMapping("/listemotspositifs/{filePath}")
+    //public   List<List<String>> readExcellistemotspositifs(String filePath) throws IOException {
+    //    return recserv.readExcel(filePath);
+    //}
     @GetMapping("scoresatisfaction/{filepath}/{filepathneutre}/{filepathnegatifs}")
     public  String retournescoredesatisfactionclient1(String filepath,String filepathneutre,String filepathnegatifs) throws IOException {
         return   recserv.retournescoredesatisfactionclient(filepath,filepathneutre,filepathnegatifs);
@@ -119,4 +131,19 @@ public class inter {
         return   recserv.lemeilleureemployedeumois();
 
     }
+    @GetMapping("affecterinterrec/{idinterv}/{idrec}")
+    public void affecter(@PathVariable Long idinterv,@PathVariable Long idrec){
+        recserv.affecterinterventionareclamation(idinterv,idrec);
+    }
+    @GetMapping("affecterlgcommandetoreclamation/{idligcmd}/{idrec}")
+    public void affecterlg(@PathVariable Integer idligcmd,@PathVariable Long idrec){
+        recserv.affecterlignecommandereclamation(idligcmd,idrec);
+    }
+
+    @GetMapping("affecteradminto/{iduser}/{idinter}")
+    public void affecteradmininter(@PathVariable Integer iduser ,@PathVariable Long idinter){
+        interserv.affecteradminintervention(iduser,idinter);
+    }
+
+
 }
