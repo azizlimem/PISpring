@@ -103,7 +103,7 @@ public class ProductServ implements IProductServ {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
+    //@Scheduled(cron = "0 0 0 * * *")
     public List<Product> getProductsBeforeOfExpiration() {
         List<Product> p = new ArrayList<>();
         iProductRepo.findAll().forEach(p::add);
